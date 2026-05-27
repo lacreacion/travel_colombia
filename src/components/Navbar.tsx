@@ -107,8 +107,9 @@ export default function Navbar() {
           </button>
         </div>
       </nav>
-
-      {isLoginOpen && <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />}
+{isLoginOpen && typeof window !== 'undefined' && (
+  <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+)}
     </>
   );
 }
