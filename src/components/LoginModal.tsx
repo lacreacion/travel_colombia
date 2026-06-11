@@ -35,8 +35,6 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
     password: "Password123!"
   };
 
-  // Si la propiedad isOpen viene en false desde el padre, no renderizamos absolutamente nada.
-  // Al no usar useEffect ni estados síncronos, ¡cero advertencias de ESLint!
   if (!isOpen) return null;
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

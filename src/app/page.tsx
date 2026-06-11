@@ -1,29 +1,40 @@
+'use client';
+
+import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroCarousel from '@/components/HeroCarousel';
+import QuickFilters from '@/components/QuickFilters';
 import MapFilter from '@/components/MapFilter';
 
 export default function Home() {
+  const [selectedCity, setSelectedCity] = useState<string>('bogota');
+  const [radius, setRadius] = useState<string>('1 KM');
+  
+  // El mapa arranca oculto (false) para que veas tus cajas blancas limpias abajo del carrusel
+  const [isMapOpen, setIsMapOpen] = useState<boolean>(false);
+
   return (
-    <main className="relative min-h-screen bg-zinc-950 flex flex-col">
-      {/* Barra de navegación flotante */}
-      <div className="relative z-50">
-        <Navbar />
-      </div>
-
-      {/* Aquí corre la magia: Plano grande, Ciudades, Servicios y Catálogos con Flechas */}
-      <HeroCarousel />
+    <main className="min-h-screen bg-black text-white relative">
+      {/* 1. Barra superior */}
+      <Navbar />
       
-      {/* Sección blanca inferior (Filtro de mapa interactivo rápido) */}
-      <section className="relative z-10 bg-white rounded-t-[50px] px-6 md:px-12 pb-16">
-        <div className="max-w-6xl mx-auto">
-          <MapFilter />
+      {/* 2. Carrusel de imágenes de fondo */}
+      <HeroCarousel />
 
-        </div>
-      </section>
+      {/* 3. TUS DOS CAJAS BLANCAS RECUPERADAS (Fijas debajo del carrusel) */}
+      <QuickFilters 
+        radius={radius} 
+        setRadius={setRadius} 
+        onOpenMap={() => setIsMapOpen(true)} 
+      />
 
-      <footer className="bg-zinc-950 py-6 text-center text-gray-500 text-[11px] border-t border-white/5 font-medium">
-        © 2026 Viaja por Colombia
-      </footer>
+      {/* 4. Ventana del mapa flotante (Oculta, solo salta al presionar el botón azul) */}
+      <MapFilter 
+        isOpen={isMapOpen} 
+        onClose={() => setIsMapOpen(false)} 
+        radiusKm={parseInt(radius) || 2} 
+        isMapLoaded={true} 
+      />
     </main>
   );
 }
