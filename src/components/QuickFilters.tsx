@@ -12,11 +12,12 @@ interface QuickFiltersProps {
   radius: string;
   setRadius: (value: string) => void;
   onOpenMap: () => void;
+  selectedCity: string;         // 🌟 Recibe la ciudad activa
+  onCityChange: (v: string) => void; // 🌟 Función para actualizar la ciudad globalmente
 }
 
-export default function QuickFilters({ radius, setRadius, onOpenMap }: QuickFiltersProps) {
+export default function QuickFilters({ radius, setRadius, onOpenMap, selectedCity, onCityChange }: QuickFiltersProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCity, setSelectedCity] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,11 +31,11 @@ export default function QuickFilters({ radius, setRadius, onOpenMap }: QuickFilt
   }, []);
 
   return (
-    <div className="w-full max-w-[65%] mx-auto -mt-10 relative z-30 px-4">
-      <div className="flex flex-col lg:flex-row gap-4 items-center justify-between">
+    <div className="w-full max-w-[65%] mx-auto -mt-7 relative z-30 px-4">
+      <div className="flex flex-col lg:flex-row gap-6 items-center justify-between relative">
         
         {/* ==================== CAJA 1: ¿BUSCAS ALGO RÁPIDO? ==================== */}
-        <div className="w-full lg:w-[55%] bg-[#ebf2ff] rounded-full px-6 py-2.5 shadow-xl flex items-center justify-between gap-4 border border-white/70 h-14">
+        <div className="w-full lg:w-[53%] bg-[#ebf2ff] rounded-full px-6 py-2.5 shadow-xl flex items-center justify-between gap-4 border border-white/70 h-14">
           <div className="flex items-center gap-3 min-w-0">
             <div className="p-1.5 bg-blue-100 text-blue-600 rounded-full shrink-0">
               <Compass className="w-4 h-4" />
@@ -76,8 +77,11 @@ export default function QuickFilters({ radius, setRadius, onOpenMap }: QuickFilt
           </div>
         </div>
 
+        {/* 🎥 LÍNEA DIVISORIA VERTICAL ESTÉTICA (En el medio exacto de las dos barras en Desktop) */}
+        <div className="hidden lg:block absolute left-[55%] top-1/2 -translate-x-1/2 -translate-y-1/2 h-8 w-px bg-zinc-300/80 z-40" />
+
         {/* ==================== CAJA 2: UN OASIS ESCONDIDO ==================== */}
-        <div className="w-full lg:w-[45%] bg-[#ebf2ff] rounded-full px-6 py-2.5 shadow-xl flex items-center justify-between gap-3 border border-white/70 h-14">
+        <div className="w-full lg:w-[43%] bg-[#ebf2ff] rounded-full px-6 py-2.5 shadow-xl flex items-center justify-between gap-3 border border-white/70 h-14">
           <div className="flex flex-col min-w-0">
             <h3 className="text-xs font-black text-blue-900 tracking-wider uppercase whitespace-nowrap">
               Un oasis escondido
@@ -87,14 +91,14 @@ export default function QuickFilters({ radius, setRadius, onOpenMap }: QuickFilt
             </p>
           </div>
 
-          <div className="relative w-48 shrink-0" ref={dropdownRef}>
+          <div className="relative w-44 shrink-0" ref={dropdownRef}>
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="w-full bg-white hover:bg-slate-50 border border-blue-100 text-slate-700 pl-3 pr-8 py-1.5 rounded-full font-bold transition-all text-[11px] flex items-center justify-between shadow-sm h-9"
             >
               <div className="flex items-center gap-1.5 truncate text-slate-400">
                 <Search className="w-3.5 h-3.5 text-blue-500 shrink-0" />
-                <span className={selectedCity ? "text-slate-800 font-extrabold" : "truncate"}>
+                <span className={selectedCity ? "text-slate-800 font-extrabold uppercase" : "truncate"}>
                   {selectedCity || "Seleccionar ciudad..."}
                 </span>
               </div>
@@ -108,11 +112,11 @@ export default function QuickFilters({ radius, setRadius, onOpenMap }: QuickFilt
                     <li key={city}>
                       <button
                         onClick={() => {
-                          setSelectedCity(city);
+                          onCityChange(city.toUpperCase()); // Guarda en mayúsculas para la BD
                           setIsOpen(false);
                         }}
-                        className={`w-full text-left px-3 py-1.5 text-[11px] font-bold rounded-lg transition-colors ${
-                          selectedCity === city
+                        className={`w-full text-left px-3 py-1.5 text-[11px] font-bold rounded-lg transition-colors uppercase ${
+                          selectedCity.toUpperCase() === city.toUpperCase()
                             ? 'bg-blue-50 text-blue-600 font-black'
                             : 'text-slate-600 hover:bg-slate-50'
                         }`}
