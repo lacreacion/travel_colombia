@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar';
 import HeroCarousel from '@/components/HeroCarousel';
 import QuickFilters from '@/components/QuickFilters';
 import MapFilter from '@/components/MapFilter';
-import { LISTA_CIUDADES } from '@/Data/travelData';
+import { LISTA_CIUDADES } from '@/Data/Data';
 
 // Mini Componente del Carrusel Interno de 3 imágenes por Tarjeta
 function CardCarousel({ imagenes, pueblo }: { imagenes: string[]; pueblo: string }) {

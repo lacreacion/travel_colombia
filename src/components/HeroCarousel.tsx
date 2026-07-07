@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { LISTA_CIUDADES, Ciudad } from '../Data/travelData';
+import { LISTA_CIUDADES, Ciudad } from '../Data/Data';
 
 interface ServicioGeneral {
   id: string;

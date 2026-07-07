@@ -1,0 +1,80 @@
+{
+  "ciudad": "santa marta",
+  "servicios": {
+    "hoteles": [
+      { "id": 1, "nombre": "Hotel Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+
+    ],
+        "airbnb": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ],
+
+
+  "hostal": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ],
+
+ "restaurantes": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ],
+
+ "sitios geniales": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ],
+
+
+  "museos": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ],
+
+
+  "parques": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ],
+
+ "teatros": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ],
+
+
+  "sitios historicos": [
+      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
+      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
+                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
+ ] 
+  }
+}
