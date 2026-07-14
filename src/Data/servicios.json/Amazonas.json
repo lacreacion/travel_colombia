@@ -2,79 +2,106 @@
   "ciudad": "amazonas",
   "servicios": {
     "hoteles": [
-      { "id": 1, "nombre": "Hotel Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
-
+     {
+  "id": 1,
+  "nombre": "Hotel Amazon B&B",
+  "link": "https://www.amazonbb.com/",
+  "imagenes": ["public/servicios/Amazonas/Hoteles/amazonb&b_portada.jfif", "public/servicios/Amazonas/Hoteles/amazonb&b_casa_1.jfif", "public/servicios/Amazonas/Hoteles/amazonb&b_habitacion.jfif"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+}
     ],
         "airbnb": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ],
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ],
 
 
   "hostal": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ],
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ],
 
  "restaurantes": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ],
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ],
 
  "sitios geniales": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ],
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ],
 
 
   "museos": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ],
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ],
 
 
   "parques": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ],
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ],
 
  "teatros": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ],
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ],
 
 
   "sitios historicos": [
-      { "id": 1, "nombre": " Selva", "link": "...", "imagen": "..." },
-      { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-            { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                  { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." },
-                        { "id": 2, "nombre": "Eco Lodge", "link": "...", "imagen": "..." }
- ] 
+{
+  "id": 1,
+  "nombre": "Hotel Selva",
+  "link": "https://...",
+  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
+  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
+  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
+  "calificacion": 4.8
+} ] 
   }
 }
