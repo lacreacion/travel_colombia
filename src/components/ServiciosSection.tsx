@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { CONFIGURACION_FILTROS } from '../Data/configuracionServicios';
+import { CONFIGURACION_FILTROS } from '../data/configuracionServicios';
 
 export default function ServiciosSection() {
   const [categoriaActiva, setCategoriaActiva] = useState('HOTELES');

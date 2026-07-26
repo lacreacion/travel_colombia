@@ -1,115 +1,283 @@
 "use client";
-import React, { useState } from 'react';
-import { User, Search, ChevronDown } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { User, Search, ChevronDown, Globe } from 'lucide-react';
 import Link from 'next/link';
 import LoginModal from './LoginModal';
+import UserProfile from './UserProfile';
+import InfoModal from './InfoModal';
 
-const MenuDesplegable = ({ title, options }: { title: string, options: string[] }) => (
-  <div className="group relative py-2">
-    <button className="hover:text-yellow-400 flex items-center gap-1 cursor-pointer transition-colors outline-none">
-      {title} <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
-    </button>
-    <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block pt-3">
-      <ul className="bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 min-w-[200px] max-h-[380px] overflow-y-auto shadow-2xl space-y-1 scrollbar-thin scrollbar-thumb-white/10">
-        {options.map((opt) => (
-          <li key={opt} className="text-white/70 hover:text-yellow-400 hover:bg-white/5 p-2 rounded-lg text-[11px] font-bold uppercase tracking-wider cursor-pointer transition-all">
-            {opt}
-          </li>
-        ))}
-      </ul>
-    </div>
-  </div>
-);
+interface NavbarProps {
+  currentCity?: string;
+}
 
-export default function Navbar() {
+const aboutInfoData: Record<string, { title: string; content: string }> = {
+  "Misión": {
+    title: "Nuestra Misión",
+    content: "Promover y facilitar el turismo en Colombia conectando a los viajeros con la riqueza cultural, natural y gastronómica de cada región, ofreciendo herramientas digitales innovadoras y accesibles para planificar experiencias inolvidables."
+  },
+  "Visión": {
+    title: "Nuestra Visión",
+    content: "Convertirnos en la plataforma digital líder en el turismo nacional de Colombia, reconocidos por impulsar el desarrollo local sostenible y brindar una experiencia de usuario excepcional e inspiradora."
+  },
+  "Historia": {
+    title: "Nuestra Historia",
+    content: "Viaja Colombia nació de la pasión por descubrir y compartir la increíble diversidad de nuestro país. Comenzó como un proyecto enfocado en conectar al viajero con rincones mágicos y tradiciones locales."
+  },
+  "Impacto Local": {
+    title: "Impacto Local",
+    content: "Trabajamos de la mano con guías locales, pequeños hoteles, artesanos y restaurantes tradicionales, garantizando que el turismo genere un impacto económico positivo y directo en las comunidades."
+  }
+};
+
+const CIUDADES_LISTA = [
+  "Amazonas", "Barranquilla", "Bogotá", "Boyacá", "Cali", "Cartagena", 
+  "Chocó", "Guajira", "Medellín", "Pasto", "Pereira", "San Andrés", 
+  "Santa Marta", "Valledupar"
+];
+
+const SERVICIOS_LISTA = [
+  "Hoteles", "Rbnb", "Hostal", "Museos", "Parques", "Teatros", 
+  "Restaurantes", "Comidas Recomendadas", "Sitios Geniales", "Sitios Históricos"
+];
+
+export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isLangOpen, setIsLangOpen] = useState(false);
+  const [activeInfoModal, setActiveInfoModal] = useState<{ title: string; content: string } | null>(null);
+
+  const [user, setUser] = useState<{ name: string; email: string } | null>(() => {
+    if (typeof window === 'undefined') return null;
+    const stored = localStorage.getItem('travel_colombia_user');
+    return stored ? JSON.parse(stored) : null;
+  });
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'travel_colombia_user') {
+        setUser(e.newValue ? JSON.parse(e.newValue) : null);
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const changeLanguage = (langCode: string) => {
+    document.cookie = `googtrans=/auto/${langCode}`;
+    window.location.reload();
+  };
+
+  const handleUserClick = () => {
+    if (user) {
+      setIsProfileOpen(true); 
+    } else {
+      setIsLoginOpen(true);   
+    }
+  };
+
+  // Funciones de navegación hacia Sesiones específicas
+  const seleccionarCiudadNavbar = (ciudad: string) => {
+    window.dispatchEvent(new CustomEvent('ir-a-sesion4', { 
+      detail: { ciudad: ciudad.toUpperCase(), servicio: null } 
+    }));
+  };
+
+  const seleccionarServicioNavbar = (servicio: string) => {
+    window.dispatchEvent(new CustomEvent('ir-a-sesion4', { 
+      detail: { ciudad: currentCity.toUpperCase(), servicio: servicio.toUpperCase() } 
+    }));
+  };
+
+  const irAContacto = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const seccionContacto = document.getElementById('sesion-5-contacto');
+    if (seccionContacto) {
+      seccionContacto.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      window.dispatchEvent(new CustomEvent('ir-a-sesion5'));
+    }
+  };
+
+  // Manejador mejorado para el botón INICIO
+  const irAInicio = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.dispatchEvent(new CustomEvent('reset-hero'));
+  };
 
   return (
     <>
-      <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[1440px] bg-black/50 backdrop-blur-lg border border-white/15 shadow-2xl rounded-full px-8 py-3 flex items-center justify-between z-50">
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-[1440px] bg-black/55 backdrop-blur-lg border border-white/15 shadow-2xl rounded-full px-8 py-3 flex items-center justify-between z-50">
         
-        {/* Lado Izquierdo: Marca Intacta */}
+        {/* Lado Izquierdo: Marca */}
         <div className="flex-initial">
-          <Link href="/" className="flex items-center gap-2 cursor-pointer select-none">
+          <Link href="/" onClick={irAInicio} className="flex items-center gap-2 cursor-pointer select-none">
             <span className="text-xl font-black tracking-tighter text-white">
               VIAJA<span className="text-yellow-400">COLOMBIA</span>
             </span>
           </Link>
         </div>
 
-        {/* Centro: Navegación Principal con el disparador en INICIO */}
+        {/* Centro: Navegación Principal */}
         <div className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 text-[11px] font-bold text-white tracking-[0.2em] flex-grow mx-4">
           
-          <Link 
-            href="/" 
-            onClick={() => {
-              if (typeof window !== 'undefined') {
-                window.dispatchEvent(new Event('reset-carrusel-global'));
-              }
-            }}
-            className="hover:text-yellow-400 transition-colors"
+          {/* 1. INICIO */}
+          <a 
+            href="#" 
+            onClick={irAInicio}
+            className="hover:text-yellow-400 transition-colors cursor-pointer"
           >
             INICIO
-          </Link>
+          </a>
           
-          <MenuDesplegable title="CIUDADES" options={[
-            "Amazonas", "Barranquilla", "Bogotá", "Boyacá", "Cali", "Cartagena", 
-            "Chocó", "Guajira", "Medellín", "Pasto", "Pereira", "San Andrés", 
-            "Santa Marta", "Valledupar"
-          ]} />
+          {/* 2. CIUDADES (Lleva a Sesión 4) */}
+          <div className="group relative py-2">
+            <button className="hover:text-yellow-400 flex items-center gap-1 cursor-pointer transition-colors outline-none">
+              CIUDADES <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
+            </button>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block pt-3">
+              <ul className="bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 min-w-[200px] max-h-[380px] overflow-y-auto shadow-2xl space-y-1">
+                {CIUDADES_LISTA.map((ciudad) => (
+                  <li 
+                    key={ciudad} 
+                    onClick={() => seleccionarCiudadNavbar(ciudad)}
+                    className="text-white/70 hover:text-yellow-400 hover:bg-white/5 p-2 rounded-lg text-[11px] font-bold uppercase tracking-wider cursor-pointer transition-all"
+                  >
+                    {ciudad}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
           
-          <MenuDesplegable title="SERVICIOS" options={[
-            "Hoteles", "Rbnb", "Hostal", "Museos", "Parques", "Teatros", 
-            "Restaurantes", "Comidas Recomendadas", "Sitios Geniales", "Sitios Históricos"
-          ]} />
+          {/* 3. SERVICIOS (Lleva a Sesión 4 con categoría) */}
+          <div className="group relative py-2">
+            <button className="hover:text-yellow-400 flex items-center gap-1 cursor-pointer transition-colors outline-none">
+              SERVICIOS <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
+            </button>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block pt-3">
+              <ul className="bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 min-w-[200px] max-h-[380px] overflow-y-auto shadow-2xl space-y-1">
+                {SERVICIOS_LISTA.map((serv) => (
+                  <li 
+                    key={serv} 
+                    onClick={() => seleccionarServicioNavbar(serv)}
+                    className="text-white/70 hover:text-yellow-400 hover:bg-white/5 p-2 rounded-lg text-[11px] font-bold uppercase tracking-wider cursor-pointer transition-all"
+                  >
+                    {serv}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
           
-          <MenuDesplegable title="QUIENES SOMOS" options={[" Misión", "Visión", "Historia", "Impacto Local"]} />
+          {/* 4. QUIÉNES SOMOS (Abre modales) */}
+          <div className="group relative py-2">
+            <button className="hover:text-yellow-400 flex items-center gap-1 cursor-pointer transition-colors outline-none">
+              QUIENES SOMOS <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
+            </button>
+            <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block pt-3">
+              <ul className="bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-4 min-w-[200px] shadow-2xl space-y-1">
+                {["Misión", "Visión", "Historia", "Impacto Local"].map((opt) => (
+                  <li 
+                    key={opt} 
+                    onClick={() => setActiveInfoModal(aboutInfoData[opt])}
+                    className="text-white/70 hover:text-yellow-400 hover:bg-white/5 p-2 rounded-lg text-[11px] font-bold uppercase tracking-wider cursor-pointer transition-all"
+                  >
+                    {opt}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
           
-          <Link href="#" className="hover:text-yellow-400 transition-colors whitespace-nowrap">CONTACTO</Link>
+          {/* 5. CONTACTO (Lleva a Sesión 5) */}
+          <a href="#contacto" onClick={irAContacto} className="hover:text-yellow-400 transition-colors whitespace-nowrap cursor-pointer">
+            CONTACTO
+          </a>
         </div>
 
+        {/* Lado Derecho: Redes e Iconos */}
         <div className="flex-initial flex items-center justify-end gap-5">
-          
+          <div className="hidden sm:flex items-center gap-4">
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-yellow-400 transition-colors p-1" title="Facebook">
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white/70 hover:text-yellow-400 transition-colors p-1" title="Instagram">
+              <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+          </div>
+
+          <span className="hidden sm:inline-block h-4 w-[1px] bg-white/20" />
+
+          {/* Selector de Idiomas */}
+          <div className="relative">
+            <button 
+              type="button"
+              onClick={() => setIsLangOpen(!isLangOpen)}
+              className="p-2 text-white/80 hover:text-yellow-400 transition-colors cursor-pointer flex items-center gap-1 outline-none"
+            >
+              <Globe size={18} />
+            </button>
+            {isLangOpen && (
+              <div className="absolute right-0 mt-3 w-44 bg-zinc-950/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-2 shadow-2xl z-50 space-y-1">
+                <div className="text-[10px] font-bold text-yellow-400 px-3 py-1 uppercase tracking-wider">Idioma</div>
+                <button onClick={() => { changeLanguage('es'); setIsLangOpen(false); }} className="w-full text-left text-white/70 hover:text-yellow-400 hover:bg-white/5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇪🇸 Español</button>
+                <button onClick={() => { changeLanguage('en'); setIsLangOpen(false); }} className="w-full text-left text-white/70 hover:text-yellow-400 hover:bg-white/5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇺🇸 English</button>
+                <button onClick={() => { changeLanguage('fr'); setIsLangOpen(false); }} className="w-full text-left text-white/70 hover:text-yellow-400 hover:bg-white/5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇫🇷 Français</button>
+                <button onClick={() => { changeLanguage('de'); setIsLangOpen(false); }} className="w-full text-left text-white/70 hover:text-yellow-400 hover:bg-white/5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇩🇪 Deutsch</button>
+                <button onClick={() => { changeLanguage('pt'); setIsLangOpen(false); }} className="w-full text-left text-white/70 hover:text-yellow-400 hover:bg-white/5 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇧🇷 Português</button>
+              </div>
+            )}
+          </div>
+
           <div className="flex items-center gap-2">
             {isSearchOpen && (
-              <input 
-                type="text" 
-                placeholder="BUSCAR..." 
-                autoFocus 
-                className="bg-white/10 border border-white/10 rounded-full py-1.5 px-4 text-white text-[10px] outline-none w-[150px] focus:border-yellow-400 transition-all placeholder:text-white/40" 
-              />
+              <input type="text" placeholder="BUSCAR..." autoFocus className="bg-white/10 border border-white/10 rounded-full py-1.5 px-4 text-white text-[10px] outline-none w-[150px] focus:border-yellow-400 transition-all placeholder:text-white/40" />
             )}
             <Search size={18} className="text-white cursor-pointer hover:text-yellow-400 transition-colors" onClick={() => setIsSearchOpen(!isSearchOpen)} />
           </div>
 
           <span className="h-5 w-[1px] bg-white/20" />
 
-          <div className="flex items-center gap-4 text-white/80">
-            {/* Facebook SVG */}
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-colors cursor-pointer flex items-center">
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
-              </svg>
-            </a>
-
-            {/* Instagram SVG */}
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="hover:text-yellow-400 transition-colors cursor-pointer flex items-center">
-              <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
-                <path fillRule="evenodd" d="M12.315 2c2.43 0 2.784.01 3.71.054 1.139.052 1.9.232 2.508.469a4.865 4.865 0 011.666 1.084c.48.48.822.955 1.084 1.665.238.608.418 1.368.469 2.508.043.926.054 1.281.054 3.71 0 2.43-.01 2.784-.054 3.71-.052 1.139-.232 1.9-.469 2.508a4.865 4.865 0 01-1.084 1.666 4.865 4.865 0 01-1.665 1.084c-.608.238-1.368.418-2.508.469-.926.043-1.281.054-3.71.054-2.43 0-2.784-.01-3.71-.054-1.139-.052-1.9-.232-2.508-.469a4.865 4.865 0 01-1.666-1.084 4.865 4.865 0 01-1.084-1.665c-.238-.608-.418-1.368-.469-2.508-.043-.926-.054-1.281-.054-3.71 0-2.43.01-2.784.054-3.71.052-1.139.232-1.9.469-2.508a4.865 4.865 0 011.084-1.666 4.865 4.865 0 011.665-1.084c.608-.238 1.368-.418 2.508-.469.926-.043 1.281-.054 3.71-.054zM12 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" clipRule="evenodd" />
-              </svg>
-            </a>
-          </div>
-
-          {/* Botón de Autenticación */}
-          <button type="button" onClick={() => setIsLoginOpen(true)} className="p-2.5 bg-yellow-400 rounded-full cursor-pointer hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-md shadow-yellow-400/10">
+          <button 
+            type="button" 
+            onClick={handleUserClick}
+            className="p-2.5 bg-yellow-400 rounded-full cursor-pointer hover:scale-105 active:scale-95 transition-all flex items-center justify-center shadow-md shadow-yellow-400/10"
+          >
             <User size={18} className="text-black" />
           </button>
         </div>
       </nav>
-{isLoginOpen && typeof window !== 'undefined' && (
-  <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
-)}
+
+      <InfoModal
+        isOpen={!!activeInfoModal}
+        onClose={() => setActiveInfoModal(null)}
+        title={activeInfoModal?.title || ''}
+        content={activeInfoModal?.content || ''}
+      />
+
+      <LoginModal 
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onLoginSuccess={(userData) => {
+          setUser(userData);
+          setIsLoginOpen(false);
+          setIsProfileOpen(true);
+        }}
+      />
+
+      <UserProfile 
+        isOpen={isProfileOpen} 
+        onClose={() => setIsProfileOpen(false)} 
+        currentCity={currentCity} 
+        user={user}
+        onLogout={() => {
+          localStorage.removeItem('travel_colombia_user');
+          setUser(null);
+          setIsProfileOpen(false);
+        }}
+      />
     </>
   );
 }

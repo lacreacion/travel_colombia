@@ -1,107 +1,73 @@
 {
-  "ciudad": "Medellin",
-  "servicios": {
-    "hoteles": [
-     {
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-}
-    ],
-        "airbnb": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ],
-
-
-  "hostal": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ],
-
- "restaurantes": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ],
-
- "sitios geniales": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ],
-
-
-  "museos": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ],
-
-
-  "parques": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ],
-
- "teatros": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ],
-
-
-  "sitios historicos": [
-{
-  "id": 1,
-  "nombre": "Hotel Selva",
-  "link": "https://...",
-  "imagenes": ["url1", "url2", "url3", "url4", "url5"], 
-  "transporte": ["Uber", "Didi", "Transmilenio", "Bus", "Terminal", "Aeropuerto"],
-  "caracteristicas": ["Spa", "Mascotas", "Parqueadero"],
-  "calificacion": 4.8
-} ] 
-  }
+  "city": "Bogotá",
+  "services": [
+    {
+      "id": "bog-hotel-1",
+      "category": "hoteles",
+      "name": "Bogotá Luxury Grand Hotel",
+      "tag": "Top 1 Hotel",
+      "guests": 2,
+      "spaPool": true,
+      "topRated": true,
+      "price": 450000,
+      "pets": true,
+      "ac": true,
+      "parking": true,
+      "images": [
+        "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1591088398332-8a7791972843?auto=format&fit=crop&w=800&q=80"
+      ],
+      "link": "https://booking.com"
+    },
+    {
+      "id": "bog-rest-1",
+      "category": "restaurantes",
+      "name": "Restaurante Gourmet Live Bogotá",
+      "tag": "Música en Vivo",
+      "country": "colombia",
+      "liveMusic": true,
+      "view": true,
+      "romantic": true,
+      "family": false,
+      "themed": false,
+      "veg": false,
+      "typical": true,
+      "fastFood": false,
+      "top": true,
+      "images": [
+        "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80"
+      ],
+      "link": "https://instagram.com"
+    },
+    {
+      "id": "bog-museum-1",
+      "category": "museos",
+      "name": "Museo de Arte e Historia de Bogotá",
+      "tag": "Sin Cobro / Abierto",
+      "open": true,
+      "free": true,
+      "images": [
+        "https://images.unsplash.com/photo-1565060169194-154d8753d427?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1582555172866-f73bb12a2ab3?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=800&q=80"
+      ],
+      "link": "https://mincultura.gov.co"
+    },
+    {
+      "id": "bog-cool-1",
+      "category": "geniales",
+      "name": "The Rooftop Vibe Bogotá",
+      "tag": "Bar Genial",
+      "type": "bar",
+      "images": [
+        "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1514933651103-005eec06c04b?auto=format&fit=crop&w=800&q=80"
+      ],
+      "link": "https://google.com"
+    }
+  ]
 }
