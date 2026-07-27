@@ -43,7 +43,6 @@ export default function MapFilter({ isOpen, onClose, radiusKm, isMapLoaded }: Ma
   const [activeCategory, setActiveCategory] = useState<string>('restaurant');
   const [selectedPlace, setSelectedPlace] = useState<string | null>(null);
 
-  // Si isOpen es falso, este componente no renderiza NADA y deja ver el fondo limpio
   if (!isOpen) return null;
 
   const currentPlaces = MOCK_PLACES[activeCategory] || [

@@ -105,7 +105,6 @@ interface Props {
 export default function CarouselSession3({ selectedCity, onNavigateToSession4 }: Props) {
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   
-  // Inicialización perezosa para evitar llamadas a setState síncronas dentro de efectos
   const [savedPlacesIds, setSavedPlacesIds] = useState<string[]>(() => {
     if (typeof window === 'undefined') return [];
     const stored = localStorage.getItem('travel_colombia_saved');

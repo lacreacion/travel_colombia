@@ -52,10 +52,8 @@ export default function ServiciosSection() {
 
           {/* Grid de Servicios */}
           <div className="grid grid-cols-2 gap-6">
-            {/* Aquí iría el componente CardServicio, el cual mapeará los datos */}
             <div className="h-96 border rounded-3xl p-6 flex flex-col justify-end bg-zinc-50">
                <h3 className="font-black text-xl">Nombre del Lugar</h3>
-               {/* Aquí pondrás la lista de botones: Guardar, Ir, Mapa, Experiencias, Transporte */}
             </div>
           </div>
         </div>

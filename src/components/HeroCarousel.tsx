@@ -61,11 +61,7 @@ export default function HeroCarousel() {
     return () => window.removeEventListener('reset-hero', handleReset);
   }, []);
 
-  // Función para manejar el envío a la Sesión 4
   const handleIrASesion4 = (servicioNombre?: string) => {
-    console.log(`Enviando a Sesión 4 -> Ciudad: ${ciudadSeleccionada}, Servicio: ${servicioNombre || 'General'}`);
-    
-    // Aquí puedes disparar un evento global, cambiar de vista o hacer scroll hacia la Sesión 4
     window.dispatchEvent(new CustomEvent('ir-a-sesion4', { 
       detail: { ciudad: ciudadSeleccionada, servicio: servicioNombre || null } 
     }));
@@ -73,38 +69,43 @@ export default function HeroCarousel() {
 
   return (
     <div 
-      className="relative h-[92vh] w-full flex flex-col justify-between px-6 md:px-24 pt-32 pb-14 bg-cover bg-center transition-all duration-700"
+      className="relative min-h-[92vh] w-full flex flex-col justify-between px-6 md:px-24 pt-36 pb-14 bg-cover bg-center transition-all duration-700 overflow-hidden"
       style={{ 
-        backgroundImage: `linear-gradient(to bottom, rgba(9,9,11,0.4), rgba(9,9,11,0.95)), url(${ciudadActiva.imagenesHero[imgIndex]})` 
+        backgroundImage: `linear-gradient(to bottom, rgba(9,9,11,0.5), rgba(9,9,11,0.92)), url(${ciudadActiva.imagenesHero[imgIndex]})` 
       }}
     >
-      <div className="space-y-1 max-w-xl z-25">
-        <span className="text-yellow-400 text-lg md:text-xl font-black tracking-[0.25em] uppercase block">
+      {/* Contenido Izquierdo (Textos principales) */}
+      <div className="space-y-2 max-w-xl z-20 mt-4">
+        <span className="text-yellow-400 text-sm md:text-base font-black tracking-[0.25em] uppercase block">
           {ciudadSeleccionada}
         </span>
-        <h1 className="text-7xl font-black italic uppercase text-white">{ciudadActiva.nombre}</h1>
-        <p className="text-white/70 italic border-l-2 border-yellow-400/50 pl-2 max-w-sm pt-2">{ciudadActiva.descripcionHero}</p>
+        <h1 className="text-5xl md:text-7xl font-black italic uppercase text-white drop-shadow-md">
+          {ciudadActiva.nombre}
+        </h1>
+        <p className="text-white/80 text-sm md:text-base italic border-l-2 border-yellow-400 pl-3 max-w-md pt-1">
+          {ciudadActiva.descripcionHero}
+        </p>
         
-        {/* Vínculo "Ver más" / Ciudad ver más -> Envía a la Sesión 4 */}
         <button 
           onClick={() => handleIrASesion4(fase === 'servicios' ? ciudadActiva.nombre : undefined)}
-          className="bg-yellow-400 text-black px-6 py-2 font-bold uppercase rounded-lg hover:bg-white transition-colors cursor-pointer mt-2"
+          className="bg-yellow-400 text-black px-6 py-2.5 font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-white transition-colors cursor-pointer mt-3 shadow-lg"
         >
           Ver más
         </button>
       </div>
 
-      <div className="w-full md:w-[50%] ml-auto z-50 pr-6 pb-10 relative flex items-center gap-4 mt-10">
+      {/* Carrusel de Tarjetas Inferior (Z-index controlado para no interferir con modales) */}
+      <div className="w-full md:w-[60%] ml-auto z-30 pr-2 pb-2 relative flex items-center gap-3 mt-12">
         <button 
           onClick={() => scroll('left')}
-          className="bg-black/50 p-3 rounded-full text-white hover:bg-yellow-400 hover:text-black transition-all shrink-0 z-50 cursor-pointer"
+          className="bg-black/60 hover:bg-yellow-400 hover:text-black text-white p-3 rounded-full transition-all shrink-0 cursor-pointer border border-white/10"
         >
           ◀
         </button>
 
         <div 
           ref={scrollContainerRef}
-          className="flex gap-4 overflow-x-auto py-10 scrollbar-none justify-start items-center"
+          className="flex gap-4 overflow-x-auto py-4 scrollbar-none justify-start items-center"
         >
           {(fase === 'ciudades' ? LISTA_CIUDADES : SERVICIOS_CATEGORIAS).map((item) => {
             const esCiudad = 'imagenesHero' in item;
@@ -132,21 +133,20 @@ export default function HeroCarousel() {
                   if (fase === 'ciudades' && itemCiudad) {
                     setCiudadSeleccionada(itemCiudad.nombre);
                     setCiudadActiva(itemCiudad);
-                    setFase('servicios'); // Pasa a la fase de servicios de esa ciudad
+                    setFase('servicios');
                   } else if (itemServicio) {
-                    // Al hacer clic en un servicio, lo envía a la Sesión 4 con la ciudad y el servicio escogido
                     handleIrASesion4(itemServicio.nombre);
                   }
                 }}
-                className="min-w-35 max-w-35 h-60 rounded-2xl cursor-pointer border-2 border-transparent hover:border-yellow-400 transition-all duration-300 relative overflow-hidden shadow-lg hover:scale-110 hover:z-50 shrink-0"
+                className="min-w-[140px] max-w-[140px] h-[220px] rounded-2xl cursor-pointer border-2 border-transparent hover:border-yellow-400 transition-all duration-300 relative overflow-hidden shadow-xl hover:scale-105 shrink-0 bg-zinc-900"
               >
                 <img 
                   src={itemCiudad ? itemCiudad.imagenesHero[0] : itemServicio?.imagen} 
                   alt={item.nombre}
-                  className="w-full h-full object-cover brightness-[0.5] transition-transform duration-300 hover:scale-110" 
+                  className="w-full h-full object-cover brightness-[0.6] transition-transform duration-300 hover:scale-110" 
                 />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <h4 className="text-xs font-black uppercase text-white truncate">{item.nombre}</h4>
+                <div className="absolute bottom-3 left-3 right-3">
+                  <h4 className="text-[11px] font-black uppercase text-white truncate drop-shadow">{item.nombre}</h4>
                 </div>
               </div>
             );
@@ -155,7 +155,7 @@ export default function HeroCarousel() {
 
         <button 
           onClick={() => scroll('right')}
-          className="bg-black/50 p-3 rounded-full text-white hover:bg-yellow-400 hover:text-black transition-all shrink-0 z-50 cursor-pointer"
+          className="bg-black/60 hover:bg-yellow-400 hover:text-black text-white p-3 rounded-full transition-all shrink-0 cursor-pointer border border-white/10"
         >
           ▶
         </button>

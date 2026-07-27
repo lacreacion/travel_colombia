@@ -20,7 +20,7 @@ interface UserProfileProps {
   onLogout?: () => void;
 }
 
-export default function UserProfile({ isOpen, onClose, currentCity }: UserProfileProps) {
+export default function UserProfile({ isOpen, onClose, currentCity, onLogout }: UserProfileProps) {
   // Inicialización perezosa para evitar llamadas a setState síncronas en useEffect
   const [savedPlaces, setSavedPlaces] = useState<SavedPlace[]>(() => {
     if (typeof window === 'undefined') return [];
@@ -79,80 +79,106 @@ export default function UserProfile({ isOpen, onClose, currentCity }: UserProfil
   const citySavedPlaces = savedPlaces.filter(p => p.city.toLowerCase() === currentCity.toLowerCase());
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex justify-end">
-      <div className="w-full max-w-md bg-white h-full shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+    <div className="fixed inset-0 z-50 bg-black/75 backdrop-blur-md flex justify-end">
+      <div className="w-full max-w-md bg-gradient-to-b from-neutral-900 to-black h-full shadow-[-15px_0_50px_rgba(245,158,11,0.1)] flex flex-col animate-in slide-in-from-right duration-300 border-l border-amber-500/20">
         
+        {/* Destello sutil de fondo en la cabecera */}
+        <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+
         {/* Cabecera del Perfil */}
-        <div className="p-4 border-b border-neutral-200 flex items-center justify-between bg-neutral-50">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-full bg-red-600 text-white flex items-center justify-center font-bold text-sm">
+        <div className="p-5 border-b border-neutral-800 flex items-center justify-between relative z-10">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-yellow-600 text-black flex items-center justify-center font-black text-sm shadow-[0_0_15px_rgba(245,158,11,0.4)]">
               👤
             </div>
             <div>
-              <h2 className="text-sm font-bold text-neutral-900">Mi Perfil de Viajero</h2>
-              <p className="text-[11px] text-neutral-500">Ciudad actual: <span className="font-semibold text-red-600">{currentCity}</span></p>
+              <h2 className="text-sm font-extrabold tracking-wider text-white uppercase">Mi Perfil de Viajero</h2>
+              <p className="text-[11px] text-neutral-400 mt-0.5">Ciudad actual: <span className="font-bold text-amber-400 uppercase">{currentCity}</span></p>
             </div>
           </div>
-          <button 
-            onClick={onClose}
-            className="text-neutral-400 hover:text-neutral-700 text-sm font-bold px-2 py-1 cursor-pointer"
-          >
-            ✕
-          </button>
+
+          {/* Contenedor de Botones (Cerrar Sesión y Cerrar Panel) */}
+          <div className="flex items-center gap-2">
+            <button 
+              onClick={() => {
+                localStorage.removeItem('travel_colombia_user');
+                window.dispatchEvent(new Event('storage'));
+                if (onLogout) onLogout();
+                onClose();
+              }}
+              className="text-[10px] font-bold text-red-400 hover:text-white bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 px-3 py-1.5 rounded-full transition-all cursor-pointer uppercase tracking-wider"
+              title="Cerrar sesión"
+            >
+              Cerrar Sesión
+            </button>
+
+            <button 
+              onClick={onClose}
+              className="text-neutral-500 hover:text-white bg-neutral-800/50 hover:bg-neutral-700/50 border border-neutral-700/50 rounded-full w-8 h-8 flex items-center justify-center transition-all cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
         </div>
 
         {/* Pestañas de Navegación */}
-        <div className="grid grid-cols-2 border-b border-neutral-200 text-xs font-bold text-center">
+        <div className="grid grid-cols-2 border-b border-neutral-800 text-[11px] font-bold text-center bg-neutral-900/30">
           <button
             onClick={() => setActiveTab('guardados')}
-            className={`py-3 transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-              activeTab === 'guardados' ? 'border-b-2 border-red-600 text-red-600 bg-red-50/50' : 'text-neutral-500 hover:bg-neutral-50'
+            className={`py-4 transition-all cursor-pointer flex items-center justify-center gap-2 uppercase tracking-widest ${
+              activeTab === 'guardados' 
+                ? 'border-b-2 border-amber-400 text-amber-400 bg-amber-500/5' 
+                : 'text-neutral-500 hover:bg-neutral-800/50 hover:text-neutral-300 border-b-2 border-transparent'
             }`}
           >
             <Heart className="w-3.5 h-3.5" /> Mis Guardados ({savedPlaces.length})
           </button>
           <button
             onClick={() => setActiveTab('hoyQuiero')}
-            className={`py-3 transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
-              activeTab === 'hoyQuiero' ? 'border-b-2 border-red-600 text-red-600 bg-red-50/50' : 'text-neutral-500 hover:bg-neutral-50'
+            className={`py-4 transition-all cursor-pointer flex items-center justify-center gap-2 uppercase tracking-widest ${
+              activeTab === 'hoyQuiero' 
+                ? 'border-b-2 border-amber-400 text-amber-400 bg-amber-500/5' 
+                : 'text-neutral-500 hover:bg-neutral-800/50 hover:text-neutral-300 border-b-2 border-transparent'
             }`}
           >
             <Navigation className="w-3.5 h-3.5" /> Hoy Quiero...
           </button>
         </div>
 
-        {/* Contenido de las pestañas */}
-        <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
+        <div className="flex-1 overflow-y-auto p-5 flex flex-col gap-4 relative z-10 custom-scrollbar">
           
+          {/* ================= PESTAÑA: GUARDADOS ================= */}
           {activeTab === 'guardados' && (
-            <div className="flex flex-col gap-2.5">
-              <span className="text-[10px] font-black tracking-widest text-neutral-400 uppercase">Lugares favoritos guardados</span>
+            <div className="flex flex-col gap-3">
+              <span className="text-[10px] font-black tracking-widest text-amber-500/70 uppercase">Lugares favoritos guardados</span>
+              
               {savedPlaces.length === 0 ? (
-                <div className="text-center py-10 text-neutral-400 text-xs">
-                  <p>No tienes lugares guardados todavía.</p>
-                  <p className="text-[10px] mt-1">Explora la ciudad y guarda tus favoritos.</p>
+                <div className="text-center py-12 text-neutral-500 text-xs bg-neutral-900/30 rounded-2xl border border-neutral-800 border-dashed">
+                  <Heart className="w-8 h-8 mx-auto mb-3 text-neutral-700" />
+                  <p className="text-neutral-400">No tienes lugares guardados todavía.</p>
+                  <p className="text-[10px] mt-1 text-neutral-500">Explora la ciudad y guarda tus favoritos.</p>
                 </div>
               ) : (
                 savedPlaces.map((place) => (
-                  <div key={place.id} className="flex items-center justify-between bg-neutral-50 p-2.5 rounded-xl border border-neutral-100 shadow-2xs">
-                    <div className="flex items-center gap-2.5">
-                      <div className="w-10 h-10 bg-neutral-200 rounded-lg overflow-hidden shrink-0">
+                  <div key={place.id} className="flex items-center justify-between bg-neutral-800/40 hover:bg-neutral-800/80 p-3 rounded-2xl border border-neutral-700/50 shadow-md transition-all group">
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-neutral-900 rounded-xl overflow-hidden shrink-0 border border-neutral-700/50">
                         {place.image ? (
-                          <img src={place.image} alt={place.title} className="w-full h-full object-cover" />
+                          <img src={place.image} alt={place.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center text-xs">📍</div>
                         )}
                       </div>
                       <div>
-                        <h4 className="text-xs font-bold text-neutral-900">{place.title}</h4>
-                        <p className="text-[10px] text-neutral-500 flex items-center gap-1">
-                          <MapPin className="w-3 h-3 text-red-600" /> {place.city} • <span className="uppercase">{place.category}</span>
+                        <h4 className="text-sm font-bold text-white group-hover:text-amber-400 transition-colors">{place.title}</h4>
+                        <p className="text-[10px] text-neutral-400 flex items-center gap-1 mt-0.5">
+                          <MapPin className="w-3 h-3 text-amber-500" /> {place.city} • <span className="uppercase">{place.category}</span>
                         </p>
                       </div>
                     </div>
                     <button
                       onClick={() => removeSavedPlace(place.id)}
-                      className="text-neutral-400 hover:text-red-600 p-1.5 transition-colors cursor-pointer"
+                      className="text-neutral-500 hover:text-red-500 bg-neutral-900/50 p-2 rounded-full transition-colors cursor-pointer"
                       title="Eliminar de guardados"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -163,33 +189,37 @@ export default function UserProfile({ isOpen, onClose, currentCity }: UserProfil
             </div>
           )}
 
+          {/* ================= PESTAÑA: HOY QUIERO ================= */}
           {activeTab === 'hoyQuiero' && (
-            <div className="flex flex-col gap-3">
-              <div className="bg-red-50 border border-red-100 p-3 rounded-xl text-xs text-red-900">
-                <p className="font-bold">Planifica tu ruta del día en {currentCity}</p>
-                <p className="text-[11px] text-red-700 mt-0.5">Selecciona de tus guardados los sitios que deseas visitar hoy. Los ordenaremos automáticamente del más cercano al más lejano.</p>
+            <div className="flex flex-col gap-4">
+              <div className="bg-amber-500/10 border border-amber-500/20 p-4 rounded-2xl text-xs relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/20 rounded-full blur-2xl"></div>
+                <p className="font-bold text-amber-400 text-sm mb-1 relative z-10">Planifica tu ruta del día en {currentCity}</p>
+                <p className="text-[11px] text-neutral-300 leading-relaxed relative z-10">Selecciona de tus guardados los sitios que deseas visitar hoy. Los ordenaremos automáticamente del más cercano al más lejano.</p>
               </div>
 
-              <span className="text-[10px] font-black tracking-widest text-neutral-400 uppercase mt-1">Disponibles en {currentCity} para hoy:</span>
+              <span className="text-[10px] font-black tracking-widest text-amber-500/70 uppercase mt-2">Disponibles en {currentCity} para hoy:</span>
               
               {citySavedPlaces.length === 0 ? (
-                <div className="text-center py-6 text-neutral-400 text-xs">
-                  <p>No tienes lugares guardados en <strong>{currentCity}</strong>.</p>
+                <div className="text-center py-8 text-neutral-400 text-xs bg-neutral-900/30 rounded-2xl border border-neutral-800 border-dashed">
+                  <p>No tienes lugares guardados en <strong className="text-amber-400">{currentCity}</strong>.</p>
                 </div>
               ) : (
-                <div className="flex flex-col gap-2 max-h-45 overflow-y-auto pr-1">
+                <div className="flex flex-col gap-2.5 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                   {citySavedPlaces.map((place) => (
-                    <label key={place.id} className="flex items-center justify-between bg-neutral-50 p-2 rounded-lg border border-neutral-100 cursor-pointer hover:bg-neutral-100 text-xs">
-                      <div className="flex items-center gap-2">
+                    <label key={place.id} className="flex items-center justify-between bg-neutral-800/40 p-3 rounded-xl border border-neutral-700/50 cursor-pointer hover:bg-neutral-800 hover:border-amber-500/40 transition-all text-xs group">
+                      <div className="flex items-center gap-3">
                         <input 
                           type="checkbox" 
                           checked={selectedForRoute.includes(place.id)}
                           onChange={() => toggleRouteSelection(place.id)}
-                          className="accent-red-600 rounded"
+                          className="w-4 h-4 accent-amber-500 rounded bg-neutral-900 border-neutral-700 cursor-pointer"
                         />
-                        <span className="font-semibold text-neutral-800">{place.title}</span>
+                        <span className={`font-semibold transition-colors ${selectedForRoute.includes(place.id) ? 'text-amber-400' : 'text-white'}`}>
+                          {place.title}
+                        </span>
                       </div>
-                      <span className="text-[10px] text-neutral-400 uppercase">{place.category}</span>
+                      <span className="text-[9px] font-bold tracking-wider text-neutral-500 uppercase bg-neutral-900 px-2 py-1 rounded-md">{place.category}</span>
                     </label>
                   ))}
                 </div>
@@ -198,30 +228,32 @@ export default function UserProfile({ isOpen, onClose, currentCity }: UserProfil
               <button
                 onClick={generateRoute}
                 disabled={selectedForRoute.length === 0}
-                className="w-full bg-red-600 hover:bg-red-700 disabled:bg-neutral-300 text-white py-2 rounded-lg text-xs font-bold transition-all cursor-pointer shadow-xs mt-2"
+                className="w-full bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 disabled:opacity-50 disabled:grayscale text-neutral-950 py-3.5 rounded-xl text-xs font-extrabold tracking-widest uppercase transition-all cursor-pointer shadow-[0_0_20px_rgba(245,158,11,0.2)] mt-2"
               >
-                Generar Ruta del Día ({selectedForRoute.length} seleccionados)
+                Generar Ruta ({selectedForRoute.length})
               </button>
 
               {/* Resultado de la Ruta Optimizada */}
               {optimizedRoute.length > 0 && (
-                <div className="flex flex-col gap-2 mt-3 pt-3 border-t border-neutral-200">
-                  <span className="text-[10px] font-black tracking-widest text-red-600 uppercase">Ruta Optimizada (Cercano ➔ Lejano)</span>
+                <div className="flex flex-col gap-3 mt-4 pt-4 border-t border-neutral-800">
+                  <span className="text-[10px] font-black tracking-widest text-green-400 uppercase flex items-center gap-1">
+                    <Navigation className="w-3 h-3" /> Ruta Optimizada (Cercano ➔ Lejano)
+                  </span>
                   <div className="flex flex-col gap-2">
                     {optimizedRoute.map((stop, index) => (
-                      <div key={stop.id} className="flex items-center justify-between bg-neutral-900 text-white p-2.5 rounded-xl text-xs">
-                        <div className="flex items-center gap-2.5">
-                          <span className="w-5 h-5 rounded-full bg-red-600 text-white font-bold text-[10px] flex items-center justify-center shrink-0">
+                      <div key={stop.id} className="flex items-center justify-between bg-black/60 border border-amber-500/20 text-white p-3 rounded-xl text-xs hover:border-amber-500/50 transition-all">
+                        <div className="flex items-center gap-3">
+                          <span className="w-6 h-6 rounded-full bg-amber-500 text-black font-extrabold text-[10px] flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(245,158,11,0.5)]">
                             {index + 1}
                           </span>
                           <div>
-                            <p className="font-bold">{stop.title}</p>
-                            <p className="text-[10px] text-neutral-400 uppercase">{stop.category}</p>
+                            <p className="font-bold text-sm text-neutral-200">{stop.title}</p>
+                            <p className="text-[9px] tracking-wider text-neutral-500 uppercase mt-0.5">{stop.category}</p>
                           </div>
                         </div>
                         <button
                           onClick={() => setOptimizedRoute(optimizedRoute.filter(r => r.id !== stop.id))}
-                          className="text-neutral-400 hover:text-red-400 text-xs cursor-pointer"
+                          className="text-neutral-500 hover:text-red-400 text-lg cursor-pointer px-2"
                           title="Quitar de la ruta"
                         >
                           ✕
@@ -233,7 +265,7 @@ export default function UserProfile({ isOpen, onClose, currentCity }: UserProfil
               )}
 
               {/* COMPONENTE DE MAPA DE RUTA */}
-              <div className="mt-4 pt-4 border-t border-neutral-200">
+              <div className="mt-2 pt-4 border-t border-neutral-800">
                 <RouteMap routeStops={optimizedRoute} currentCity={currentCity} />
               </div>
 
@@ -241,7 +273,6 @@ export default function UserProfile({ isOpen, onClose, currentCity }: UserProfil
           )}
 
         </div>
-
       </div>
     </div>
   );

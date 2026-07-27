@@ -21,7 +21,7 @@ const aboutInfoData: Record<string, { title: string; content: string }> = {
   },
   "Historia": {
     title: "Nuestra Historia",
-    content: "Viaja Colombia nació de la pasión por descubrir y compartir la increíble diversidad de nuestro país. Comenzó como un proyecto enfocado en conectar al viajero con rincones mágicos y tradiciones locales."
+    content: "Viaja Colombia nació de la pasión por descobrir y compartir la increíble diversidad de nuestro país. Comenzó como un proyecto enfocado en conectar al viajero con rincones mágicos y tradiciones locales."
   },
   "Impacto Local": {
     title: "Impacto Local",
@@ -76,7 +76,6 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
     }
   };
 
-  // Funciones de navegación hacia Sesiones específicas
   const seleccionarCiudadNavbar = (ciudad: string) => {
     window.dispatchEvent(new CustomEvent('ir-a-sesion4', { 
       detail: { ciudad: ciudad.toUpperCase(), servicio: null } 
@@ -99,7 +98,6 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
     }
   };
 
-  // Manejador mejorado para el botón INICIO
   const irAInicio = (e: React.MouseEvent) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -122,16 +120,11 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
         {/* Centro: Navegación Principal */}
         <div className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 text-[11px] font-bold text-white tracking-[0.2em] flex-grow mx-4">
           
-          {/* 1. INICIO */}
-          <a 
-            href="#" 
-            onClick={irAInicio}
-            className="hover:text-yellow-400 transition-colors cursor-pointer"
-          >
+          <a href="#" onClick={irAInicio} className="hover:text-yellow-400 transition-colors cursor-pointer">
             INICIO
           </a>
           
-          {/* 2. CIUDADES (Lleva a Sesión 4) */}
+          {/* Ciudades */}
           <div className="group relative py-2">
             <button className="hover:text-yellow-400 flex items-center gap-1 cursor-pointer transition-colors outline-none">
               CIUDADES <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
@@ -151,7 +144,7 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
             </div>
           </div>
           
-          {/* 3. SERVICIOS (Lleva a Sesión 4 con categoría) */}
+          {/* Servicios */}
           <div className="group relative py-2">
             <button className="hover:text-yellow-400 flex items-center gap-1 cursor-pointer transition-colors outline-none">
               SERVICIOS <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
@@ -171,7 +164,7 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
             </div>
           </div>
           
-          {/* 4. QUIÉNES SOMOS (Abre modales) */}
+          {/* Quiénes Somos */}
           <div className="group relative py-2">
             <button className="hover:text-yellow-400 flex items-center gap-1 cursor-pointer transition-colors outline-none">
               QUIENES SOMOS <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
@@ -191,7 +184,6 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
             </div>
           </div>
           
-          {/* 5. CONTACTO (Lleva a Sesión 5) */}
           <a href="#contacto" onClick={irAContacto} className="hover:text-yellow-400 transition-colors whitespace-nowrap cursor-pointer">
             CONTACTO
           </a>

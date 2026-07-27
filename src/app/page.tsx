@@ -7,6 +7,7 @@ import CarouselSession3 from '@/components/CarouselSession3';
 import FiltersSesion4 from '@/components/FiltersSesion4'; 
 import TargetSesion4 from '@/components/TargetSesion4';
 import Session5 from '@/components/Session5';
+import LoginModal from '@/components/LoginModal';
 
 import bogotaData from '@/data/servicios.json/Bogota.json';
 import medellinData from '@/data/servicios.json/Medellin.json';
@@ -29,7 +30,8 @@ export default function Page() {
   const [imageIndices, setImageIndices] = useState<Record<number, number>>({});
   const [transportOpenId, setTransportOpenId] = useState<number | null>(null);
 
-  // Estados de subfiltros para la sesión 4
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
+
   const [hGuests, setHGuests] = useState<number>(2);
   const [hPriceMin, setHPriceMin] = useState<number>(50000);
   const [hPriceMax, setHPriceMax] = useState<number>(500000);
@@ -47,10 +49,9 @@ export default function Page() {
   const [rThemes, setRThemes] = useState<Set<string>>(new Set(['todos']));
   const [fastFoodTypes, setFastFoodTypes] = useState<Set<string>>(new Set(['todos']));
 
-  // ==========================================
-  // ESCUCHADOR DE EVENTOS GLOBALES (Tipado seguro)
-  // ==========================================
   useEffect(() => {
+    const handleOpenLogin = () => setIsLoginModalOpen(true);
+
     const handleIrASesion4 = (event: Event) => {
       const customEvent = event as CustomEvent<{ ciudad?: string; servicio?: string | null }>;
       if (customEvent.detail?.ciudad) {
@@ -76,10 +77,12 @@ export default function Page() {
       }
     };
 
+    window.addEventListener('open-login-modal', handleOpenLogin as EventListener);
     window.addEventListener('ir-a-sesion4', handleIrASesion4 as EventListener);
     window.addEventListener('ir-a-sesion5', handleIrASesion5 as EventListener);
 
     return () => {
+      window.removeEventListener('open-login-modal', handleOpenLogin as EventListener);
       window.removeEventListener('ir-a-sesion4', handleIrASesion4 as EventListener);
       window.removeEventListener('ir-a-sesion5', handleIrASesion5 as EventListener);
     };
@@ -123,7 +126,9 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-white text-black flex flex-col items-center overflow-y-auto">
+      {/* Navbar con la prop correcta que espera actualmente */}
       <Navbar currentCity={selectedCity} />
+      
       <HeroCarousel />
 
       <div className="w-full bg-[#FFFFFF] flex flex-col items-center gap-6 py-12 px-4">
@@ -199,6 +204,13 @@ export default function Page() {
       <div id="sesion-5-contacto" className="w-full">
         <Session5 selectedCity={selectedCity} />
       </div>
+
+      {/* Modal centralizado de autenticación */}
+      <LoginModal 
+        isOpen={isLoginModalOpen}
+        onClose={() => setIsLoginModalOpen(false)}
+        onLoginSuccess={() => {}}
+      />
     </main>
   );
 }

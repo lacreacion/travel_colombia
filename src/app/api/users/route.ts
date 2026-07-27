@@ -9,7 +9,8 @@ export async function GET() {
     const users = await db.collection('users').find({}).toArray();
 
     return NextResponse.json({ success: true, data: users }, { status: 200 });
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('DETALLE DEL ERROR EN GET:', error);
     return NextResponse.json({ success: false, error: 'Error al conectar a la base de datos' }, { status: 500 });
   }
 }
@@ -44,9 +45,11 @@ export async function POST(request: Request) {
       { success: true, message: 'Usuario registrado con éxito', id: result.insertedId },
       { status: 201 }
     );
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('DETALLE DEL ERROR EN EL SERVIDOR:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Error en el servidor al registrar el usuario';
     return NextResponse.json(
-      { success: false, error: 'Error en el servidor al registrar el usuario' },
+      { success: false, error: errorMessage },
       { status: 500 }
     );
   }
