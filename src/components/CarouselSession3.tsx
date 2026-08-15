@@ -27,9 +27,9 @@ const DESTINATIONS_DATA: Record<string, Place[]> = {
       title: 'Zipaquirá', 
       desc: 'Famosa por su majestuosa Catedral de Sal subterránea.', 
       images: [
-        'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'
+        'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=60'
       ], 
       info: 'Zipaquirá ofrece arquitectura colonial e historia minera a pocos kilómetros de la capital.' 
     },
@@ -38,9 +38,9 @@ const DESTINATIONS_DATA: Record<string, Place[]> = {
       title: 'Choachí', 
       desc: 'Pueblo de montaña con aguas termales y gran biodiversidad.', 
       images: [
-        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'
+        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=60'
       ], 
       info: 'Ideal para desconectarse, disfrutar de los termales y caminatas ecológicas.' 
     },
@@ -49,9 +49,9 @@ const DESTINATIONS_DATA: Record<string, Place[]> = {
       title: 'Guatavita', 
       desc: 'Cuna de la legendaria leyenda de Eldorado y su hermosa laguna.', 
       images: [
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80'
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=60'
       ], 
       info: 'Un embalse imponente con senderos sagrados y artesanías locales.' 
     },
@@ -60,9 +60,9 @@ const DESTINATIONS_DATA: Record<string, Place[]> = {
       title: 'Chía', 
       desc: 'Gastronomía típica, sabana abierta y centros históricos vibrantes.', 
       images: [
-        'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+        'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=60'
       ], 
       info: 'Reconocido por sus restaurantes campestres y cercanía con la metrópoli.' 
     },
@@ -71,30 +71,30 @@ const DESTINATIONS_DATA: Record<string, Place[]> = {
       title: 'Suesca', 
       desc: 'Paraíso de la escalada en roca y deportes de aventura.', 
       images: [
-        'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80',
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'
+        'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=60',
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=60'
       ], 
       info: 'Rocas imponentes, vías férreas antiguas y turismo de aventura.' 
     }
   ],
   "Medellín": [
-    { id: '1', title: 'Guatapé', desc: 'Piedra del Peñol y coloridos zócalos.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'], info: 'Vistas panorámicas inolvidables.' },
-    { id: '2', title: 'Santa Fe', desc: 'Arquitectura colonial e historia.', images: ['https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80'], info: 'Pueblo patrimonio.' },
-    { id: '3', title: 'Jericó', desc: 'Tierra de carriel y tradición.', images: ['https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'], info: 'Cafetales y miradores.' },
-    { id: '4', title: 'Jardín', desc: 'Calles coloridas y cascadas.', images: ['https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80'], info: 'Rincón tradicional.' },
-    { id: '5', title: 'Envigado', desc: 'Tranquilidad y parques ecológicos.', images: ['https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80'], info: 'Zona moderna al sur.' }
+    { id: '1', title: 'Guatapé', desc: 'Piedra del Peñol y coloridos zócalos.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=60'], info: 'Vistas panorámicas inolvidables.' },
+    { id: '2', title: 'Santa Fe', desc: 'Arquitectura colonial e historia.', images: ['https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=60'], info: 'Pueblo patrimonio.' },
+    { id: '3', title: 'Jericó', desc: 'Tierra de carriel y tradición.', images: ['https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=60'], info: 'Cafetales y miradores.' },
+    { id: '4', title: 'Jardín', desc: 'Calles coloridas y cascadas.', images: ['https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=600&q=60'], info: 'Rincón tradicional.' },
+    { id: '5', title: 'Envigado', desc: 'Tranquilidad y parques ecológicos.', images: ['https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=60'], info: 'Zona moderna al sur.' }
   ],
   "Cali": [
-    { id: '1', title: 'San Antonio', desc: 'Barrio bohemio y mirador.', images: ['https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=800&q=80'], info: 'Cafés artísticos.' },
-    { id: '2', title: 'Pance', desc: 'Naturaleza y río cristalino.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'], info: 'Zona de ecoturismo.' },
-    { id: '3', title: 'Buga', desc: 'Basílica e historia religiosa.', images: ['https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=800&q=80'], info: 'Ciudad turística.' },
-    { id: '4', title: 'Mulaló', desc: 'Historia y paisajes de falda.', images: ['https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80'], info: 'Herencia colonial.' },
-    { id: '5', title: 'Calima', desc: 'Lago ideal para deportes náuticos.', images: ['https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80'], info: 'Vientos para Kitesurf.' }
+    { id: '1', title: 'San Antonio', desc: 'Barrio bohemio y mirador.', images: ['https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=600&q=60'], info: 'Cafés artísticos.' },
+    { id: '2', title: 'Pance', desc: 'Naturaleza y río cristalino.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=60'], info: 'Zona de ecoturismo.' },
+    { id: '3', title: 'Buga', desc: 'Basílica e historia religiosa.', images: ['https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=600&q=60'], info: 'Ciudad turística.' },
+    { id: '4', title: 'Mulaló', desc: 'Historia y paisajes de falda.', images: ['https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=600&q=60'], info: 'Herencia colonial.' },
+    { id: '5', title: 'Calima', desc: 'Lago ideal para deportes náuticos.', images: ['https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=60'], info: 'Vientos para Kitesurf.' }
   ]
 };
 
 const DEFAULT_PLACES: Place[] = [
-  { id: '1', title: 'Mirador Principal', desc: 'Punto turístico recomendado.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'], info: 'Excelente opción.' }
+  { id: '1', title: 'Mirador Principal', desc: 'Punto turístico recomendado.', images: ['https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=600&q=60'], info: 'Excelente opción.' }
 ];
 
 interface Props {

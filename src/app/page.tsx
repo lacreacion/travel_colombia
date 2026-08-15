@@ -77,14 +77,23 @@ export default function Page() {
       }
     };
 
+    const handleGlobalCityChange = (event: Event) => {
+      const customEvent = event as CustomEvent<{ ciudad?: string }>;
+      if (customEvent.detail?.ciudad) {
+        setSelectedCity(customEvent.detail.ciudad);
+      }
+    };
+
     window.addEventListener('open-login-modal', handleOpenLogin as EventListener);
     window.addEventListener('ir-a-sesion4', handleIrASesion4 as EventListener);
     window.addEventListener('ir-a-sesion5', handleIrASesion5 as EventListener);
+    window.addEventListener('change-city', handleGlobalCityChange as EventListener);
 
     return () => {
       window.removeEventListener('open-login-modal', handleOpenLogin as EventListener);
       window.removeEventListener('ir-a-sesion4', handleIrASesion4 as EventListener);
       window.removeEventListener('ir-a-sesion5', handleIrASesion5 as EventListener);
+      window.removeEventListener('change-city', handleGlobalCityChange as EventListener);
     };
   }, []);
 
@@ -104,11 +113,18 @@ export default function Page() {
           ? (dataObj as { services: unknown[] }).services 
           : []);
 
+    const defaultImages = [
+      "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920&h=1080&fit=crop",
+      "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1920&h=1080&fit=crop"
+    ];
+
     return (items as Array<Record<string, unknown>>).map((item, index) => ({
       id: Number(item.id) || index + 1,
       name: String(item.name || 'Lugar sin nombre'),
-      tag: String(item.tag || item.category || 'hotel'),
-      images: Array.isArray(item.images) ? (item.images as string[]) : ['/images/default.jpg'],
+      tag: `${String(item.category || '')} ${String(item.tag || '')}`,
+      images: Array.isArray(item.images) && item.images.length > 0 && typeof item.images[0] === 'string' && item.images[0].startsWith('http')
+        ? (item.images as string[]) 
+        : defaultImages,
       link: String(item.link || '#')
     }));
   };
@@ -126,7 +142,6 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-white text-black flex flex-col items-center overflow-y-auto">
-      {/* Navbar con la prop correcta que espera actualmente */}
       <Navbar currentCity={selectedCity} />
       
       <HeroCarousel />
@@ -205,7 +220,6 @@ export default function Page() {
         <Session5 selectedCity={selectedCity} />
       </div>
 
-      {/* Modal centralizado de autenticación */}
       <LoginModal 
         isOpen={isLoginModalOpen}
         onClose={() => setIsLoginModalOpen(false)}

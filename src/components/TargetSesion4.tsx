@@ -277,12 +277,13 @@ export default function TargetSesion4({
               className="absolute w-64 bg-white/95 backdrop-blur-md rounded-3xl p-3.5 flex flex-col justify-between shadow-xl border border-neutral-100 transition-all hover:scale-105 hover:shadow-2xl hover:z-50 cursor-pointer group hover:[animation-play-state:paused]"
             >
               <div className="relative w-full h-32 rounded-2xl overflow-hidden mb-2.5">
-                <img 
+<img 
                   src={service.images[currentImgIdx]} 
                   alt={service.name} 
+                  loading="eager"
+                  decoding="async"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                />
-                <button 
+                />                <button 
                   onClick={(e) => nextImage(service.id, totalImages, e)}
                   className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm text-neutral-900 text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 cursor-pointer"
                 >
