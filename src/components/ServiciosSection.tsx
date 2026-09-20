@@ -1,63 +1,131 @@
 'use client';
-
 import React, { useState } from 'react';
-import { CONFIGURACION_FILTROS } from '../data/configuracionServicios';
+import FilterSesion4 from './FiltersSesion4';
+import TargetSesion4 from './TargetSesion4';
 
-export default function ServiciosSection() {
-  const [categoriaActiva, setCategoriaActiva] = useState('HOTELES');
-  const [ciudad, setCiudad] = useState('BOGOTÁ');
+interface ServiceItem {
+  id: number;
+  name: string;
+  tag: string;
+  images: string[];
+  link: string;
+}
+
+export default function ServicioSection() {
+  // Estados de control principales compartidos con el filtro y la grilla
+  const [selectedCity, setSelectedCity] = useState<string>("Bogotá");
+  const [activeService, setActiveService] = useState<string>("hotel");
+  const [hasSearched, setHasSearched] = useState<boolean>(false);
+  const [filteredServices, setFilteredServices] = useState<ServiceItem[]>([]);
+  const [imageIndices, setImageIndices] = useState<Record<number, number>>({});
+  const [transportOpenId, setTransportOpenId] = useState<number | null>(null);
+
+  // Estados de los Filtros Avanzados (Tipos intactos requeridos por FilterSesion4)
+  const [hGuests, setHGuests] = useState<number>(2);
+  const [hPriceMin, setHPriceMin] = useState<number>(0);
+  const [hPriceMax, setHPriceMax] = useState<number>(1000);
+  const [hSpaPool, setHSpaPool] = useState<boolean>(false);
+  const [hTopRated, setHTopRated] = useState<boolean>(false);
+  const [hPets, setHPets] = useState<boolean>(false);
+  const [hAc, setHAc] = useState<boolean>(false);
+  const [hParking, setHParking] = useState<boolean>(false);
+
+  const [rSubFilters, setRSubFilters] = useState<Set<string>>(new Set(['todos']));
+  const [fastFoodTypes, setFastFoodTypes] = useState<Set<string>>(new Set(['todos']));
+  const [rCountries, setRCountries] = useState<Set<string>>(new Set(['todos']));
+  const [rThemes, setRThemes] = useState<Set<string>>(new Set(['todos']));
+
+  const [cOpen, setCOpen] = useState<boolean>(false);
+  const [cFree, setCFree] = useState<boolean>(false);
+  const [geniusCategory, setGeniusCategory] = useState<string>('recomendaciones');
+
+  // Catálogo de ejemplo base
+  const allServicesList: ServiceItem[] = [
+    { id: 1, name: "Hotel Grand Hyatt", tag: "hotel", images: ['https://images.unsplash.com/photo-1566073771259-6a8506099945', 'https://images.unsplash.com/photo-1582719478250-c89cae48b1b2'], link: "#" },
+    { id: 2, name: "Loft en Zona Rosa", tag: "airbnb", images: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688', 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267'], link: "#" },
+    { id: 3, name: "Botanico Hostal", tag: "hostal", images: ['https://images.unsplash.com/photo-1555854877-bab0e564b8d5'], link: "#" },
+    { id: 4, name: "Restaurante Leo", tag: "restaurante", images: ['https://images.unsplash.com/photo-1517248135467-4c7edcad34c4'], link: "#" },
+  ];
+
+  // Función para rotar imágenes de las tarjetas de la sesión 4
+  const nextImage = (id: number, totalImages: number, e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setImageIndices(prev => ({
+      ...prev,
+      [id]: ((prev[id] || 0) + 1) % totalImages
+    }));
+  };
+
+  const handleResetSearch = () => {
+    setHasSearched(false);
+    setActiveService("hotel");
+    setFilteredServices([]);
+  };
 
   return (
-    <section className="w-full bg-white py-16 px-6">
-      <div className="max-w-7xl mx-auto flex gap-8">
+    <div className="w-full min-h-screen bg-white flex flex-col">
+      
+      {/* Contenedor Principal en Disposición de Dos Columnas (Sidebar Filtro + Grilla de Contenido) */}
+      <div className="w-full flex flex-col md:flex-row items-start">
         
-        {/* Lado Izquierdo: FILTRO (20%) */}
-        <aside className="w-1/5 space-y-8">
-          {/* Selector de Ciudad */}
-          <div>
-            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Ciudad</label>
-            <select value={ciudad} onChange={(e) => setCiudad(e.target.value)} className="w-full mt-2 p-2 border rounded-lg text-sm font-bold">
-              <option>BOGOTÁ</option>
-              <option>MEDELLÍN</option>
-            </select>
-          </div>
+        {/* PANEL LATERAL DE FILTROS (FilterSesion4 integrado) */}
+        <FilterSesion4 
+          selectedCity={selectedCity}
+          setSelectedCity={setSelectedCity}
+          activeService={activeService}
+          setActiveService={setActiveService}
+          setHasSearched={setHasSearched}
+          hGuests={hGuests}
+          setHGuests={setHGuests}
+          hPriceMin={hPriceMin}
+          setHPriceMin={setHPriceMin}
+          hPriceMax={hPriceMax}
+          setHPriceMax={setHPriceMax}
+          hSpaPool={hSpaPool}
+          setHSpaPool={setHSpaPool}
+          hTopRated={hTopRated}
+          setHTopRated={setHTopRated}
+          hPets={hPets}
+          setHPets={setHPets}
+          hAc={hAc}
+          setHAc={setHAc}
+          hParking={hParking}
+          setHParking={setHParking}
+          rSubFilters={rSubFilters}
+          setRSubFilters={setRSubFilters}
+          fastFoodTypes={fastFoodTypes}
+          setFastFoodTypes={setFastFoodTypes}
+          rCountries={rCountries}
+          setRCountries={setRCountries}
+          rThemes={rThemes}
+          setRThemes={setRThemes}
+          cOpen={cOpen}
+          setCOpen={setCOpen}
+          cFree={cFree}
+          setCFree={setCFree}
+          geniusCategory={geniusCategory}
+          setGeniusCategory={setGeniusCategory}
+        />
 
-          {/* Filtros Dinámicos según Categoría */}
-          <div>
-            <h4 className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-4">Filtros de {categoriaActiva}</h4>
-            <div className="space-y-3">
-              {CONFIGURACION_FILTROS[categoriaActiva]?.map((filtro) => (
-                <label key={filtro} className="flex items-center gap-2 text-sm font-medium text-zinc-600">
-                  <input type="checkbox" className="rounded text-[#1764ff]" />
-                  {filtro}
-                </label>
-              ))}
-            </div>
-          </div>
-        </aside>
-
-        {/* Lado Derecho: CAJAS DE SERVICIOS (80%) */}
-        <div className="w-4/5">
-          <div className="flex gap-4 mb-8 overflow-x-auto pb-4">
-             {Object.keys(CONFIGURACION_FILTROS).map(cat => (
-               <button 
-                 key={cat} 
-                 onClick={() => setCategoriaActiva(cat)}
-                 className={`px-6 py-2 rounded-full font-black text-xs uppercase transition-all ${categoriaActiva === cat ? 'bg-[#1764ff] text-white' : 'bg-zinc-100'}`}
-               >
-                 {cat.replace('_', ' ')}
-               </button>
-             ))}
-          </div>
-
-          {/* Grid de Servicios */}
-          <div className="grid grid-cols-2 gap-6">
-            <div className="h-96 border rounded-3xl p-6 flex flex-col justify-end bg-zinc-50">
-               <h3 className="font-black text-xl">Nombre del Lugar</h3>
-            </div>
-          </div>
+        {/* SECCIÓN DERECHA: GRILLA CON ANIMACIÓN LATERAL Y POR FILAS (TargetSesion4) */}
+        <div className="flex-1 w-full overflow-hidden">
+          <TargetSesion4
+            hasSearched={hasSearched}
+            setHasSearched={setHasSearched}
+            selectedCity={selectedCity}
+            activeService={activeService}
+            filteredServices={filteredServices}
+            allServicesList={allServicesList}
+            imageIndices={imageIndices}
+            nextImage={nextImage}
+            transportOpenId={transportOpenId}
+            setTransportOpenId={setTransportOpenId}
+            onResetSearch={handleResetSearch}
+          />
         </div>
+
       </div>
-    </section>
+
+    </div>
   );
 }

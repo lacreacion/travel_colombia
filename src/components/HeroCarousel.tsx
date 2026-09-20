@@ -219,7 +219,7 @@ export default function HeroCarousel() {
   const imagenFondoActual = slideActivo?.imagenesHero?.[imgIndex] || slideActivo?.imagenesHero?.[0] || '';
 
  return (
-    <div className="w-full px-4 md:px-12 mt-28 mb-6"> 
+    <div className="w-full px-4 md:px-12 mt-28 mb-2"> 
       
       {/* Contenedor principal */}
       <div 
@@ -230,19 +230,19 @@ export default function HeroCarousel() {
       >
         {/* Textos dentro del recuadro */}
         <div className="space-y-2 max-w-xl z-20 mt-2">
-          <span className="text-yellow-400 text-sm md:text-base font-black tracking-[0.25em] uppercase block">
+          <span className="text-[#ffee00] drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] text-sm md:text-base font-black tracking-[0.25em] uppercase block">
             {ciudadSeleccionada}
           </span>
           <h1 className="text-5xl md:text-7xl font-black italic uppercase text-white drop-shadow-md">
             {slideActivo.nombre}
           </h1>
-          <p className="text-white/90 text-sm md:text-base italic border-l-2 border-yellow-400 pl-3 max-w-md pt-1 drop-shadow">
+          <p className="text-white/90 text-sm md:text-base italic border-l-2 border-[#ffee00] pl-3 max-w-md pt-1 drop-shadow">
             {slideActivo.descripcionHero}
           </p>
           
           <button 
             onClick={() => handleIrASesion4(fase === 'servicios' ? slideActivo.nombre : undefined)}
-            className="bg-yellow-400 text-black px-6 py-2.5 font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-white transition-colors cursor-pointer mt-3 shadow-lg"
+            className="bg-[#ffee00] text-black px-6 py-2.5 font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-white transition-colors cursor-pointer mt-3 shadow-[0_0_15px_rgba(255,238,0,0.5)]"
           >
             Ver más
           </button>
@@ -252,7 +252,7 @@ export default function HeroCarousel() {
         <div className="absolute -bottom-16 right-6 md:right-16 z-30 flex items-center gap-3 w-auto max-w-[65%]">
           <button 
             onClick={() => scroll('left')}
-            className="bg-black/80 hover:bg-yellow-400 hover:text-black text-white p-3 rounded-full transition-all shrink-0 cursor-pointer border border-white/20 shadow-lg"
+            className="bg-black/80 hover:bg-[#ffee00] hover:text-black hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] text-white p-3 rounded-full transition-all shrink-0 cursor-pointer border border-white/20 shadow-lg"
           >
             ◀
           </button>
@@ -297,7 +297,7 @@ export default function HeroCarousel() {
                     }
                   }}
                   style={{ width: '130px', minWidth: '130px', height: '210px' }}
-                  className="rounded-2xl cursor-pointer border-2 border-transparent hover:border-yellow-400 transition-all duration-300 relative overflow-hidden shadow-2xl hover:scale-105 shrink-0 bg-zinc-900"
+                  className="rounded-2xl cursor-pointer border-2 border-transparent hover:border-[#ffee00] hover:shadow-[0_0_12px_rgba(255,238,0,0.6)] transition-all duration-300 relative overflow-hidden shadow-2xl hover:scale-105 shrink-0 bg-zinc-900"
                 >
                   <img 
                     src={imagenUrl} 
@@ -331,7 +331,7 @@ export default function HeroCarousel() {
 
           <button 
             onClick={() => scroll('right')}
-            className="bg-black/80 hover:bg-yellow-400 hover:text-black text-white p-3 rounded-full transition-all shrink-0 cursor-pointer border border-white/20 shadow-lg"
+            className="bg-black/80 hover:bg-[#ffee00] hover:text-black hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] text-white p-3 rounded-full transition-all shrink-0 cursor-pointer border border-white/20 shadow-lg"
           >
             ▶
           </button>

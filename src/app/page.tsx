@@ -7,7 +7,7 @@ import CarouselSession3 from '@/components/CarouselSession3';
 import FiltersSesion4 from '@/components/FiltersSesion4'; 
 import TargetSesion4 from '@/components/TargetSesion4';
 import Session5 from '@/components/Session5';
-import LoginModal from '@/components/LoginModal';
+import LoginModal from '@/components/AuthModalLogin';
 
 import bogotaData from '@/data/servicios.json/Bogota.json';
 import medellinData from '@/data/servicios.json/Medellin.json';

@@ -15,7 +15,8 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
 
   return (
     <>
-      <div className="w-full max-w-[1350px] mx-auto -mt-10 z-50 relative px-6 flex gap-6 items-center">
+      {/* Se sustituye -mt-10 por mt-12 para que baje y respete el espacio de las tarjetas de la Sesión 2 */}
+      <div className="w-full max-w-[1350px] mx-auto mt-09 z-40 relative px-6 flex gap-6 items-center">
         
         {/* Cápsula 1: Búsqueda rápida */}
         <div className="w-1/2 bg-[#ebf2ff] rounded-[3rem] px-7 py-4 shadow-xl flex items-center justify-between border border-white/90">
@@ -35,7 +36,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
                 <button 
                   key={km} 
                   onClick={() => setRadius(km)} 
-                  className={`px-3 py-1.5 rounded-full text-[9px] font-black transition-all duration-300 
+                  className={`px-3 py-1.5 rounded-full text-[9px] font-black transition-all duration-300 cursor-pointer
                     ${radius === km 
                       ? 'bg-blue-600 text-white shadow-[0_0_12px_rgba(37,99,235,0.7)]' 
                       : 'text-gray-400 hover:text-blue-600 hover:bg-blue-50'}`}
@@ -47,7 +48,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
 
             <button 
               onClick={() => setIsMapModalOpen(true)}
-              className="bg-blue-600 text-white px-4 py-2.5 rounded-full text-[9px] font-black uppercase flex items-center gap-1.5 hover:bg-blue-700 shadow-md shrink-0 transition-transform active:scale-95 whitespace-nowrap"
+              className="bg-blue-600 text-white px-4 py-2.5 rounded-full text-[9px] font-black uppercase flex items-center gap-1.5 hover:bg-blue-700 shadow-md shrink-0 transition-transform active:scale-95 whitespace-nowrap cursor-pointer"
             >
               <MapPin className="w-3.5 h-3.5"/> Abrir Mapa
             </button>
@@ -63,7 +64,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
           
           <button 
             onClick={() => setIsOpen(!isOpen)} 
-            className="bg-white hover:bg-slate-50 border border-blue-100 text-slate-800 px-5 py-2.5 rounded-full font-black text-[10px] flex items-center gap-3 shadow-sm transition-all min-w-[160px] justify-between shrink-0"
+            className="bg-white hover:bg-slate-50 border border-blue-100 text-slate-800 px-5 py-2.5 rounded-full font-black text-[10px] flex items-center gap-3 shadow-sm transition-all min-w-[160px] justify-between shrink-0 cursor-pointer"
           >
             <div className="flex items-center gap-2">
               <Search className="w-3.5 h-3.5 text-blue-500"/> 
@@ -78,7 +79,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
                 <button 
                   key={c} 
                   onClick={() => { onCityChange(c); setIsOpen(false); }} 
-                  className={`block w-full text-left px-4 py-2 text-[10px] font-black uppercase rounded-2xl transition-all
+                  className={`block w-full text-left px-4 py-2 text-[10px] font-black uppercase rounded-2xl transition-all cursor-pointer
                     ${selectedCity === c ? 'bg-blue-600 text-white' : 'text-slate-500 hover:bg-blue-50 hover:text-blue-600'}`}
                 >
                   {c}
@@ -106,7 +107,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
               </div>
               <button 
                 onClick={() => setIsMapModalOpen(false)}
-                className="bg-white hover:bg-red-50 text-slate-500 hover:text-red-500 p-2.5 rounded-full transition-colors shadow-sm"
+                className="bg-white hover:bg-red-50 text-slate-500 hover:text-red-500 p-2.5 rounded-full transition-colors shadow-sm cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -125,7 +126,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
             <div className="bg-slate-50 px-8 py-4 flex justify-end border-t border-slate-100">
               <button 
                 onClick={() => setIsMapModalOpen(false)}
-                className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-colors shadow-md"
+                className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-colors shadow-md cursor-pointer"
               >
                 Cerrar Mapa
               </button>

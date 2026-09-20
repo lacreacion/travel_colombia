@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Camera, MapPin, X, Utensils, Star } from 'lucide-react';
 
 interface SubServiceItem {
@@ -153,8 +153,28 @@ export default function TargetSesion4({
 }: TargetSesion4Props) {
   const [selectedCategoryModal, setSelectedCategoryModal] = useState<typeof FIXED_NINE_SERVICES[0] | null>(null);
   const [modalImageIndices, setModalImageIndices] = useState<Record<number, number>>({});
+  
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
 
-  // Determinamos qué mostrar en el modal de búsqueda general
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   const formattedSearchItems: SubServiceItem[] = filteredServices.length > 0 
     ? filteredServices.map((s, idx) => ({
         id: s.id || idx,
@@ -176,46 +196,6 @@ export default function TargetSesion4({
     setModalImageIndices(prev => ({ ...prev, [subServiceId]: ((prev[subServiceId] - 1 + totalImages) % totalImages) }));
   };
 
-  const floatingKeyframes = `
-    @keyframes floatA {
-      0% { transform: translate(0px, 0px) rotate(0deg); }
-      33% { transform: translate(70px, -45px) rotate(2deg); }
-      66% { transform: translate(-45px, 60px) rotate(-2deg); }
-      100% { transform: translate(0px, 0px) rotate(0deg); }
-    }
-    @keyframes floatB {
-      0% { transform: translate(0px, 0px) rotate(0deg); }
-      33% { transform: translate(-60px, 50px) rotate(-3deg); }
-      66% { transform: translate(50px, -60px) rotate(2deg); }
-      100% { transform: translate(0px, 0px) rotate(0deg); }
-    }
-    @keyframes floatC {
-      0% { transform: translate(0px, 0px) rotate(0deg); }
-      33% { transform: translate(45px, 70px) rotate(2deg); }
-      66% { transform: translate(-60px, -45px) rotate(-1deg); }
-      100% { transform: translate(0px, 0px) rotate(0deg); }
-    }
-    @keyframes floatD {
-      0% { transform: translate(0px, 0px) rotate(0deg); }
-      33% { transform: translate(-80px, -35px) rotate(-2deg); }
-      66% { transform: translate(35px, 80px) rotate(3deg); }
-      100% { transform: translate(0px, 0px) rotate(0deg); }
-    }
-  `;
-
-  const positions = [
-    { top: '4%', left: '3%', anim: 'floatA 14s ease-in-out infinite', z: 10 },
-    { top: '22%', left: '35%', anim: 'floatB 18s ease-in-out infinite', z: 30 },
-    { top: '6%', left: '68%', anim: 'floatC 16s ease-in-out infinite', z: 20 },
-    { top: '45%', left: '2%', anim: 'floatD 20s ease-in-out infinite', z: 25 },
-    { top: '40%', left: '36%', anim: 'floatA 15s ease-in-out infinite', z: 40 },
-    { top: '35%', left: '71%', anim: 'floatB 17s ease-in-out infinite', z: 15 },
-    { top: '70%', left: '18%', anim: 'floatC 21s ease-in-out infinite', z: 35 },
-    { top: '65%', left: '52%', anim: 'floatD 13s ease-in-out infinite', z: 12 },
-    { top: '52%', left: '76%', anim: 'floatA 19s ease-in-out infinite', z: 28 },
-  ];
-
-  // Si hasSearched es true, mostramos directamente el modal con los resultados del filtro
   const isSearchModalOpen = hasSearched;
   const isCategoryModalOpen = selectedCategoryModal !== null;
 
@@ -235,84 +215,99 @@ export default function TargetSesion4({
   };
 
   return (
-    <main className="w-full md:w-[75%] bg-white p-6 md:p-10 flex flex-col justify-between relative min-h-[850px] border-none shadow-none overflow-hidden">
-      <style>{floatingKeyframes}</style>
+    <main ref={sectionRef} className="w-full bg-white pt-2 pb-12 px-6 md:px-12 overflow-hidden">
+      <div className="max-w-7xl mx-auto flex flex-col">
+        
+        {/* ENCABEZADO */}
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <span className="text-[11px] uppercase tracking-wider text-red-600 font-extrabold bg-red-50 px-3 py-1 rounded-full">
+              Explorador de Destinos
+            </span>
+            <h1 className="text-3xl md:text-4xl font-extrabold text-neutral-950 mt-2 tracking-tight">{selectedCity}</h1>
+            <p className="text-sm text-neutral-500 mt-1">
+              Catálogo general de servicios organizados en cuadrícula
+            </p>
+          </div>
 
-      <div className="absolute top-6 left-6 z-50 pointer-events-none">
-        <span className="text-[11px] uppercase tracking-wider text-red-600 font-extrabold bg-red-50 px-3 py-1 rounded-full">
-          Explorador de Destinos
-        </span>
-        <h1 className="text-4xl font-extrabold text-neutral-950 mt-2 tracking-tight">{selectedCity}</h1>
-        <p className="text-sm text-neutral-500 mt-1">
-          Las 9 categorías de servicios flotando y cruzándose
-        </p>
-      </div>
-
-      {hasSearched && onResetSearch && (
-        <button 
-          onClick={onResetSearch}
-          className="absolute top-6 right-6 z-50 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold px-4 py-2 rounded-full transition-all flex items-center gap-1.5 cursor-pointer"
-        >
-          <X className="w-4 h-4" />
-          Cerrar resultados
-        </button>
-      )}
-
-      <div className="relative w-full h-[750px] mt-24">
-        {FIXED_NINE_SERVICES.map((service, index) => {
-          const currentImgIdx = imageIndices[service.id] || 0;
-          const totalImages = service.images.length;
-          const pos = positions[index % positions.length];
-
-          return (
-            <div 
-              key={service.id}
-              onClick={() => setSelectedCategoryModal(service)}
-              style={{
-                top: pos.top,
-                left: pos.left,
-                animation: pos.anim,
-                zIndex: pos.z
-              }}
-              className="absolute w-64 bg-white/95 backdrop-blur-md rounded-3xl p-3.5 flex flex-col justify-between shadow-xl border border-neutral-100 transition-all hover:scale-105 hover:shadow-2xl hover:z-50 cursor-pointer group hover:[animation-play-state:paused]"
+          {hasSearched && onResetSearch && (
+            <button 
+              onClick={onResetSearch}
+              className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold px-4 py-2.5 rounded-full transition-all flex items-center gap-1.5 cursor-pointer self-start"
             >
-              <div className="relative w-full h-32 rounded-2xl overflow-hidden mb-2.5">
-<img 
-                  src={service.images[currentImgIdx]} 
-                  alt={service.name} 
-                  loading="eager"
-                  decoding="async"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                />                <button 
-                  onClick={(e) => nextImage(service.id, totalImages, e)}
-                  className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm text-neutral-900 text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 cursor-pointer"
-                >
-                  <Camera className="w-2.5 h-2.5" />
-                  <span>{currentImgIdx + 1} / {totalImages}</span>
-                </button>
-                <span className="absolute top-2 left-2 bg-red-600 text-white text-[8px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
-                  {service.name}
-                </span>
-              </div>
+              <X className="w-4 h-4" />
+              Cerrar resultados de búsqueda
+            </button>
+          )}
+        </div>
 
-              <div className="mb-2">
-                <h3 className="text-sm font-bold text-neutral-900 truncate">{service.modalTitle}</h3>
-                <p className="text-[11px] text-neutral-500 flex items-center gap-1 mt-0.5">
-                  <MapPin className="w-3 h-3 text-red-500" />
-                  {selectedCity}
-                </p>
-              </div>
+        {/* CUADRÍCULA CON EFECTO LATERAL Y POR FILAS ORDENADAS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {FIXED_NINE_SERVICES.map((service, index) => {
+            const currentImgIdx = imageIndices[service.id] || 0;
+            const totalImages = service.images.length;
 
-              <div className="bg-neutral-100/85 rounded-xl p-1.5 text-center">
-                <span className="text-[10px] text-neutral-600 font-medium flex items-center justify-center gap-1">
-                  <Utensils className="w-2.5 h-2.5 text-red-500" /> Clic para ver opciones
-                </span>
+            // Cálculo para efecto ordenado por filas y columnas (más lento y elegante)
+            const rowIndex = Math.floor(index / 3); // Fila 0, 1, 2...
+            const colIndex = index % 3;             // Columna 0, 1, 2
+            
+            // Retraso calculado por fila y columna (las filas entran escalonadas, y dentro de la fila entran de lado)
+            const delay = rowIndex * 200 + colIndex * 150;
+
+            return (
+              <div 
+                key={service.id}
+                onClick={() => setSelectedCategoryModal(service)}
+                style={{ transitionDelay: `${delay}ms` }}
+                className={`bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl border border-zinc-200/80 transition-all duration-700 ease-out flex flex-col cursor-pointer group ${
+                  isVisible ? 'opacity-100 translate-x-0 translate-y-0' : 'opacity-0 -translate-x-12 translate-y-6'
+                }`}
+              >
+                {/* Imagen fija en h-48 */}
+                <div className="relative w-full h-48 bg-zinc-100 overflow-hidden">
+                  <img 
+                    src={service.images[currentImgIdx]} 
+                    alt={service.name} 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                  />
+                  
+                  <button 
+                    onClick={(e) => nextImage(service.id, totalImages, e)}
+                    className="absolute bottom-3 right-3 bg-white/90 backdrop-blur-sm text-neutral-900 text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1 shadow cursor-pointer hover:bg-white"
+                  >
+                    <Camera className="w-3 h-3" />
+                    <span>{currentImgIdx + 1} / {totalImages}</span>
+                  </button>
+
+                  <span className="absolute top-3 left-3 bg-red-600 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
+                    {service.name}
+                  </span>
+                </div>
+
+                {/* Zona inferior ultra compacta y delgada */}
+                <div className="p-2.5 flex flex-col justify-between flex-1">
+                  <div>
+                    <h3 className="text-xs font-black text-neutral-900 group-hover:text-red-600 transition-colors leading-snug">{service.modalTitle}</h3>
+                    <p className="text-[10px] text-neutral-500 flex items-center gap-1 mt-0.5 font-medium">
+                      <MapPin className="w-3 h-3 text-red-500" />
+                      {selectedCity}
+                    </p>
+                  </div>
+
+                  <div className="mt-2 pt-2 border-t border-zinc-100">
+                    <div className="w-full bg-zinc-50 group-hover:bg-red-600 group-hover:text-white text-zinc-700 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition-colors flex items-center justify-center gap-1">
+                      <Utensils className="w-3 h-3" /> Clic para ver opciones
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+
       </div>
 
+      {/* VENTANA MODAL PARA VER OPCIONES */}
       {(isSearchModalOpen || isCategoryModalOpen) && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-fade-in">
           <div className="bg-white w-full max-w-4xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh] relative">
