@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useLanguage } from './LanguageProvider';
 
 interface InfoModalLoginProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface InfoModalLoginProps {
 }
 
 export default function InfoModalLogin({ isOpen, onClose, title, content }: InfoModalLoginProps) {
+  const { t } = useLanguage();
   if (!isOpen) return null;
 
   return (
@@ -24,11 +26,11 @@ export default function InfoModalLogin({ isOpen, onClose, title, content }: Info
         </button>
 
         <h2 className="text-xl font-black tracking-wider text-yellow-400 uppercase mb-4">
-          {title}
+          {t(title)}
         </h2>
 
         <p className="text-white/80 text-sm leading-relaxed mb-8">
-          {content}
+          {t(content)}
         </p>
 
         <button
@@ -36,7 +38,7 @@ export default function InfoModalLogin({ isOpen, onClose, title, content }: Info
           onClick={onClose}
           className="w-full bg-yellow-400 text-black font-black uppercase text-xs tracking-widest py-3.5 rounded-xl hover:bg-yellow-300 transition-colors cursor-pointer"
         >
-          Entendido
+          {t('Entendido')}
         </button>
       </div>
     </div>

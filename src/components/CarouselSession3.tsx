@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { Bookmark, Eye, Bus, ExternalLink, X, MapPin } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
 
 interface Place {
   id: string;
@@ -103,6 +104,7 @@ interface Props {
 }
 
 export default function CarouselSession3({ selectedCity, onNavigateToSession4 }: Props) {
+  const { t } = useLanguage();
   const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
   
   const [savedPlacesIds, setSavedPlacesIds] = useState<string[]>(() => {
@@ -289,9 +291,9 @@ export default function CarouselSession3({ selectedCity, onNavigateToSession4 }:
       {/* CABECERA */}
       <div className="flex flex-col items-center justify-center mb-6 text-center">
         <h2 className="text-3xl sm:text-4xl font-black italic tracking-wider colombia-title inline-block">
-          ESCAPADAS EN {currentCityKey.toUpperCase()}
+          {t('ESCAPADAS EN {city}', { city: currentCityKey.toUpperCase() })}
         </h2>
-        <p className="text-slate-400 text-xs mt-1">Desliza o haz clic en la barra inferior para ver más destinos</p>
+        <p className="text-slate-400 text-xs mt-1">{t('Desliza o haz clic en la barra inferior para ver más destinos')}</p>
       </div>
 
       {/* CONTENEDOR DEL CARRUSEL */}
@@ -361,14 +363,14 @@ export default function CarouselSession3({ selectedCity, onNavigateToSession4 }:
 
                 {/* DESCRIPCIÓN Y BOTÓN */}
                 <div className="flex flex-col justify-between flex-1 space-y-2.5 px-0.5">
-                  <p className="text-slate-400 text-[10px] line-clamp-2 leading-relaxed">{place.desc}</p>
+                  <p className="text-slate-400 text-[10px] line-clamp-2 leading-relaxed">{t(place.desc)}</p>
                   
                   <div className="pt-1.5 border-t border-slate-800">
                     <button 
                       onClick={() => { setSelectedPlace(place); setModalImageIndex(0); }}
                       className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-xl text-[10px] font-black uppercase tracking-wider flex items-center justify-center gap-1 transition-all shadow-md cursor-pointer active:scale-95"
                     >
-                      <Eye className="w-3 h-3"/> Ver más
+                      <Eye className="w-3 h-3"/> {t('Ver más')}
                     </button>
                   </div>
                 </div>
@@ -383,7 +385,7 @@ export default function CarouselSession3({ selectedCity, onNavigateToSession4 }:
           <div 
             onClick={handleBarClick}
             className="w-36 h-2 bg-slate-900 border border-slate-800 rounded-full overflow-hidden relative shadow-inner cursor-pointer hover:border-cyan-500/50 transition-colors"
-            title="Haz clic para desplazarte"
+            title={t('Haz clic para desplazarte')}
           >
             <div 
               className="absolute top-0 left-0 h-full bg-gradient-to-r from-cyan-400 via-sky-400 to-blue-500 shadow-[0_0_12px_rgba(56,189,248,0.7)] transition-all duration-150 rounded-full pointer-events-none"
@@ -418,31 +420,31 @@ export default function CarouselSession3({ selectedCity, onNavigateToSession4 }:
               </div>
 
               <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 space-y-1">
-                <h4 className="text-[10px] font-black text-cyan-400 uppercase">Acerca del Destino</h4>
-                <p className="text-slate-300 text-xs leading-relaxed">{selectedPlace.info}</p>
+                <h4 className="text-[10px] font-black text-cyan-400 uppercase">{t('Acerca del Destino')}</h4>
+                <p className="text-slate-300 text-xs leading-relaxed">{t(selectedPlace.info)}</p>
               </div>
 
               <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 bg-cyan-500/20 text-cyan-400 rounded-xl"><MapPin className="w-4 h-4" /></div>
                   <div>
-                    <h5 className="text-white text-xs font-black uppercase">Ubicación y Ruta</h5>
-                    <p className="text-slate-400 text-[10px]">Trazar ruta hacia el destino.</p>
+                    <h5 className="text-white text-xs font-black uppercase">{t('Ubicación y Ruta')}</h5>
+                    <p className="text-slate-400 text-[10px]">{t('Trazar ruta hacia el destino.')}</p>
                   </div>
                 </div>
-                <button onClick={() => setIsRouteMapOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-[10px] font-black uppercase cursor-pointer">Abrir Mapa</button>
+                <button onClick={() => setIsRouteMapOpen(true)} className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-full text-[10px] font-black uppercase cursor-pointer">{t('Abrir Mapa')}</button>
               </div>
 
               <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800 flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 bg-cyan-500/20 text-cyan-400 rounded-xl"><Bus className="w-4 h-4" /></div>
                   <div>
-                    <h5 className="text-white text-xs font-black uppercase">Transporte</h5>
-                    <p className="text-slate-400 text-[10px]">Selecciona tu medio:</p>
+                    <h5 className="text-white text-xs font-black uppercase">{t('Transporte')}</h5>
+                    <p className="text-slate-400 text-[10px]">{t('Selecciona tu medio:')}</p>
                   </div>
                 </div>
                 <select onChange={handleTransportChange} className="bg-slate-900 border border-slate-700 text-white text-xs font-bold px-3 py-2 rounded-xl outline-none cursor-pointer uppercase">
-                  <option value="">Seleccionar...</option>
+                  <option value="">{t('Seleccionar...')}</option>
                   <option value="uber">Uber</option>
                   <option value="didi">Didi</option>
                   <option value="transmilenio">Transmilenio</option>
@@ -468,13 +470,13 @@ export default function CarouselSession3({ selectedCity, onNavigateToSession4 }:
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
           <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl overflow-hidden flex flex-col h-[60vh]">
             <div className="bg-[#ebf2ff] px-6 py-3 flex items-center justify-between border-b border-blue-100">
-              <h3 className="text-xs font-black text-blue-900 uppercase">Mapa de Ruta</h3>
+              <h3 className="text-xs font-black text-blue-900 uppercase">{t('Mapa de Ruta')}</h3>
               <button onClick={() => setIsRouteMapOpen(false)} className="text-slate-500 hover:text-red-500 cursor-pointer"><X className="w-4 h-4" /></button>
             </div>
             <div className="flex-1 bg-slate-100 flex items-center justify-center text-center p-4">
               <div>
                 <MapPin className="w-10 h-10 text-blue-600 mx-auto mb-2 animate-bounce" />
-                <h4 className="text-xs font-black text-slate-700 uppercase">Navegación Activa</h4>
+                <h4 className="text-xs font-black text-slate-700 uppercase">{t('Navegación Activa')}</h4>
               </div>
             </div>
           </div>

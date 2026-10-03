@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Compass, Search, ChevronDown, MapPin, X } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
 
 const CITIES = ["Amazonas", "Barranquilla", "Bogotá", "Boyacá", "Cali", "Cartagena", "Chocó", "Guajira", "Medellín"];
 
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function FiltersSesion3({ radius, setRadius, selectedCity, onCityChange }: Props) {
+  const { t } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isMapModalOpen, setIsMapModalOpen] = useState(false);
 
@@ -25,8 +27,8 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
               <Compass className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-[11px] font-black text-blue-900 uppercase tracking-wide">¿Buscas algo rápido?</h3>
-              <p className="text-[9px] text-blue-500 font-bold uppercase tracking-tight whitespace-nowrap mt-0.5">Encuentra lugares recomendados cerca</p>
+              <h3 className="text-[11px] font-black text-blue-900 uppercase tracking-wide">{t('¿Buscas algo rápido?')}</h3>
+              <p className="text-[9px] text-blue-500 font-bold uppercase tracking-tight whitespace-nowrap mt-0.5">{t('Encuentra lugares recomendados cerca')}</p>
             </div>
           </div>
           
@@ -50,7 +52,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
               onClick={() => setIsMapModalOpen(true)}
               className="bg-blue-600 text-white px-4 py-2.5 rounded-full text-[9px] font-black uppercase flex items-center gap-1.5 hover:bg-blue-700 shadow-md shrink-0 transition-transform active:scale-95 whitespace-nowrap cursor-pointer"
             >
-              <MapPin className="w-3.5 h-3.5"/> Abrir Mapa
+              <MapPin className="w-3.5 h-3.5"/> {t('Abrir Mapa')}
             </button>
           </div>
         </div>
@@ -58,8 +60,8 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
         {/* Cápsula 2: Destino */}
         <div className="w-1/2 bg-[#ebf2ff] rounded-[3rem] px-8 py-4 shadow-xl flex items-center justify-between border border-white/90 relative">
           <div>
-            <h3 className="text-[11px] font-black text-blue-900 uppercase tracking-wide">Un oasis escondido</h3>
-            <p className="text-[9px] text-blue-500 font-bold uppercase tracking-tight whitespace-nowrap mt-0.5">Súper cerca de la ciudad.</p>
+            <h3 className="text-[11px] font-black text-blue-900 uppercase tracking-wide">{t('Un oasis escondido')}</h3>
+            <p className="text-[9px] text-blue-500 font-bold uppercase tracking-tight whitespace-nowrap mt-0.5">{t('Súper cerca de la ciudad.')}</p>
           </div>
           
           <button 
@@ -101,8 +103,8 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
                   <MapPin className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-black text-blue-900 uppercase">Mapa de Servicios Cercanos</h3>
-                  <p className="text-xs text-blue-600 font-bold">Mostrando resultados en un radio de: <span className="underline">{radius}</span></p>
+                  <h3 className="text-sm font-black text-blue-900 uppercase">{t('Mapa de Servicios Cercanos')}</h3>
+                  <p className="text-xs text-blue-600 font-bold">{t('Mostrando resultados en un radio de:')} <span className="underline">{radius}</span></p>
                 </div>
               </div>
               <button 
@@ -118,8 +120,8 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
                 <div className="inline-block p-4 bg-blue-50 rounded-full text-blue-600 mb-3 animate-pulse">
                   <MapPin className="w-10 h-10" />
                 </div>
-                <h4 className="text-base font-black text-slate-700 uppercase">Cargando Mapa Interactivo...</h4>
-                <p className="text-xs text-slate-400 mt-1">Filtrando todos los servicios a una distancia máxima de {radius}.</p>
+                <h4 className="text-base font-black text-slate-700 uppercase">{t('Cargando Mapa Interactivo...')}</h4>
+                <p className="text-xs text-slate-400 mt-1">{t('Filtrando todos los servicios a una distancia máxima de {radius}.', { radius })}</p>
               </div>
             </div>
 
@@ -128,7 +130,7 @@ export default function FiltersSesion3({ radius, setRadius, selectedCity, onCity
                 onClick={() => setIsMapModalOpen(false)}
                 className="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-colors shadow-md cursor-pointer"
               >
-                Cerrar Mapa
+                {t('Cerrar Mapa')}
               </button>
             </div>
 

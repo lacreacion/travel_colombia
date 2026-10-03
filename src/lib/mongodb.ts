@@ -2,6 +2,7 @@ import { MongoClient } from 'mongodb';
 
 const uri = process.env.MONGODB_URI as string;
 const options = {};
+export const MONGODB_DATABASE = process.env.MONGODB_DATABASE || 'Viajando_por_Colombia';
 
 let client: MongoClient;
 let clientPromise: Promise<MongoClient>;

@@ -1,6 +1,8 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { Camera, MapPin, X, Utensils, Star } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
+import { filterServicesByCategory } from '@/lib/serviceFilters';
 
 interface SubServiceItem {
   id: number;
@@ -12,6 +14,7 @@ interface SubServiceItem {
 interface ServiceItem {
   id: number;
   name: string;
+  category?: string;
   tag: string;
   images: string[];
   link: string;
@@ -147,10 +150,12 @@ export default function TargetSesion4({
   selectedCity,
   activeService,
   filteredServices,
+  allServicesList,
   imageIndices,
   nextImage,
   onResetSearch
 }: TargetSesion4Props) {
+  const { t } = useLanguage();
   const [selectedCategoryModal, setSelectedCategoryModal] = useState<typeof FIXED_NINE_SERVICES[0] | null>(null);
   const [modalImageIndices, setModalImageIndices] = useState<Record<number, number>>({});
   
@@ -183,7 +188,7 @@ export default function TargetSesion4({
         rating: 4.8
       }))
     : [
-        { id: 999, name: `No se encontraron resultados en ${selectedCity}`, images: ['https://images.unsplash.com/photo-1578575437130-527eed3abbec'], rating: 4.0 }
+        { id: 999, name: t('No se encontraron resultados en {city}', { city: selectedCity }), images: ['https://images.unsplash.com/photo-1578575437130-527eed3abbec'], rating: 4.0 }
       ];
 
   const handleNextModalImage = (subServiceId: number, totalImages: number, e: React.MouseEvent<HTMLButtonElement>) => {
@@ -199,13 +204,21 @@ export default function TargetSesion4({
   const isSearchModalOpen = hasSearched;
   const isCategoryModalOpen = selectedCategoryModal !== null;
 
+  const activeServiceName = FIXED_NINE_SERVICES.find((service) => service.tag === activeService)?.name || activeService;
   const currentModalTitle = isSearchModalOpen 
-    ? (activeService ? `Resultados para: ${activeService.toUpperCase()}` : `Resultados en ${selectedCity}`)
+    ? (activeService ? t('Resultados para: {category}', { category: t(activeServiceName) }) : t('Resultados en {city}', { city: selectedCity }))
     : selectedCategoryModal?.modalTitle || '';
 
   const currentModalItems = isSearchModalOpen 
     ? formattedSearchItems 
-    : selectedCategoryModal?.subItems || [];
+    : selectedCategoryModal
+      ? filterServicesByCategory(allServicesList, selectedCategoryModal.tag).map((service) => ({
+          id: service.id,
+          name: service.name,
+          images: service.images,
+          rating: 4.8,
+        }))
+      : [];
 
   const handleCloseModal = () => {
     setSelectedCategoryModal(null);
@@ -222,11 +235,11 @@ export default function TargetSesion4({
         <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <span className="text-[11px] uppercase tracking-wider text-red-600 font-extrabold bg-red-50 px-3 py-1 rounded-full">
-              Explorador de Destinos
+              {t('Explorador de Destinos')}
             </span>
             <h1 className="text-3xl md:text-4xl font-extrabold text-neutral-950 mt-2 tracking-tight">{selectedCity}</h1>
             <p className="text-sm text-neutral-500 mt-1">
-              Catálogo general de servicios organizados en cuadrícula
+              {t('Catálogo general de servicios organizados en cuadrícula')}
             </p>
           </div>
 
@@ -236,7 +249,7 @@ export default function TargetSesion4({
               className="bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold px-4 py-2.5 rounded-full transition-all flex items-center gap-1.5 cursor-pointer self-start"
             >
               <X className="w-4 h-4" />
-              Cerrar resultados de búsqueda
+              {t('Cerrar resultados de búsqueda')}
             </button>
           )}
         </div>
@@ -267,7 +280,7 @@ export default function TargetSesion4({
                 <div className="relative w-full h-48 bg-zinc-100 overflow-hidden">
                   <img 
                     src={service.images[currentImgIdx]} 
-                    alt={service.name} 
+                    alt={t(service.name)} 
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
                   />
                   
@@ -280,14 +293,14 @@ export default function TargetSesion4({
                   </button>
 
                   <span className="absolute top-3 left-3 bg-red-600 text-white text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow">
-                    {service.name}
+                    {t(service.name)}
                   </span>
                 </div>
 
                 {/* Zona inferior ultra compacta y delgada */}
                 <div className="p-2.5 flex flex-col justify-between flex-1">
                   <div>
-                    <h3 className="text-xs font-black text-neutral-900 group-hover:text-red-600 transition-colors leading-snug">{service.modalTitle}</h3>
+                    <h3 className="text-xs font-black text-neutral-900 group-hover:text-red-600 transition-colors leading-snug">{t(service.modalTitle)}</h3>
                     <p className="text-[10px] text-neutral-500 flex items-center gap-1 mt-0.5 font-medium">
                       <MapPin className="w-3 h-3 text-red-500" />
                       {selectedCity}
@@ -296,7 +309,7 @@ export default function TargetSesion4({
 
                   <div className="mt-2 pt-2 border-t border-zinc-100">
                     <div className="w-full bg-zinc-50 group-hover:bg-red-600 group-hover:text-white text-zinc-700 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider transition-colors flex items-center justify-center gap-1">
-                      <Utensils className="w-3 h-3" /> Clic para ver opciones
+                      <Utensils className="w-3 h-3" /> {t('Clic para ver opciones')}
                     </div>
                   </div>
                 </div>
@@ -323,6 +336,11 @@ export default function TargetSesion4({
             </div>
 
             <div className="p-8 overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {currentModalItems.length === 0 && (
+                <p className="col-span-full text-center text-sm text-neutral-500">
+                  {t('No se encontraron resultados en {city}', { city: selectedCity })}
+                </p>
+              )}
               {currentModalItems.map((item) => {
                 const currentImgIdx = modalImageIndices[item.id] || 0;
                 const totalImages = item.images.length;
@@ -332,7 +350,7 @@ export default function TargetSesion4({
                     <div className="relative w-full h-40 rounded-xl overflow-hidden mb-3">
                       <img 
                         src={item.images[currentImgIdx]} 
-                        alt={item.name} 
+                        alt={t(item.name)} 
                         className="w-full h-full object-cover" 
                       />
                       {totalImages > 1 && (
@@ -346,7 +364,7 @@ export default function TargetSesion4({
                         </>
                       )}
                     </div>
-                    <h4 className="font-bold text-neutral-900 text-base mb-1">{item.name}</h4>
+                    <h4 className="font-bold text-neutral-900 text-base mb-1">{t(item.name)}</h4>
                     {item.rating && (
                       <div className="flex items-center gap-1 text-xs text-amber-500 font-bold">
                         <Star className="w-3.5 h-3.5 fill-current" />

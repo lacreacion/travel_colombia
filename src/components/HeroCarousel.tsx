@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { useLanguage } from './LanguageProvider';
 
 interface HeroSlide {
   id: string;
@@ -171,6 +172,7 @@ const SERVICIOS_CATEGORIAS: ServicioCategoria[] = [
 ];
 
 export default function HeroCarousel() {
+  const { t } = useLanguage();
   const [fase, setFase] = useState<'ciudades' | 'servicios'>('ciudades');
   const [slideActivo, setSlideActivo] = useState<HeroSlide>(HERO_SLIDES[0]);
   const [ciudadSeleccionada, setCiudadSeleccionada] = useState<string>(HERO_SLIDES[0].nombre);
@@ -231,20 +233,20 @@ export default function HeroCarousel() {
         {/* Textos dentro del recuadro */}
         <div className="space-y-2 max-w-xl z-20 mt-2">
           <span className="text-[#ffee00] drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] text-sm md:text-base font-black tracking-[0.25em] uppercase block">
-            {ciudadSeleccionada}
+            {t(ciudadSeleccionada)}
           </span>
           <h1 className="text-5xl md:text-7xl font-black italic uppercase text-white drop-shadow-md">
-            {slideActivo.nombre}
+            {t(slideActivo.nombre)}
           </h1>
           <p className="text-white/90 text-sm md:text-base italic border-l-2 border-[#ffee00] pl-3 max-w-md pt-1 drop-shadow">
-            {slideActivo.descripcionHero}
+            {t(slideActivo.descripcionHero)}
           </p>
           
           <button 
             onClick={() => handleIrASesion4(fase === 'servicios' ? slideActivo.nombre : undefined)}
             className="bg-[#ffee00] text-black px-6 py-2.5 font-bold uppercase text-xs tracking-wider rounded-xl hover:bg-white transition-colors cursor-pointer mt-3 shadow-[0_0_15px_rgba(255,238,0,0.5)]"
           >
-            Ver más
+            {t('Ver más')}
           </button>
         </div>
 
@@ -280,7 +282,10 @@ export default function HeroCarousel() {
                         ...slideActivo,
                         nombre: itemServicio.nombre,
                         imagenesHero: [itemServicio.imagen], 
-                        descripcionHero: `Explora nuestras recomendaciones de ${itemServicio.nombre.toLowerCase()} en ${ciudadSeleccionada}.`
+                        descripcionHero: t('Explora nuestras recomendaciones de {category} en {city}.', {
+                          category: t(itemServicio.nombre),
+                          city: ciudadSeleccionada,
+                        })
                       });
                       setImgIndex(0);
                     }
@@ -301,7 +306,7 @@ export default function HeroCarousel() {
                 >
                   <img 
                     src={imagenUrl} 
-                    alt={item.nombre}
+                    alt={t(item.nombre)}
                     loading="eager"
                     decoding="async"
                     style={{ 
@@ -322,7 +327,7 @@ export default function HeroCarousel() {
                     }} 
                   />
                   <div style={{ position: 'absolute', bottom: '12px', left: '12px', right: '12px', zIndex: 10 }}>
-                    <h4 className="text-[11px] font-black uppercase text-white truncate drop-shadow-md">{item.nombre}</h4>
+                    <h4 className="text-[11px] font-black uppercase text-white truncate drop-shadow-md">{t(item.nombre)}</h4>
                   </div>
                 </div>
               );

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Navbar from '@/components/Navbar';
+import { filterServicesByCategory, normalizeCatalogValue } from '@/lib/serviceFilters';
 import HeroCarousel from '@/components/HeroCarousel';
 import FiltersSesion3 from '@/components/FiltersSesion3';
 import CarouselSession3 from '@/components/CarouselSession3';
@@ -10,12 +11,11 @@ import Session5 from '@/components/Session5';
 import LoginModal from '@/components/AuthModalLogin';
 
 import bogotaData from '@/data/servicios.json/Bogota.json';
-import medellinData from '@/data/servicios.json/Medellin.json';
-import caliData from '@/data/servicios.json/Cali.json';
 
 interface ServiceItem {
   id: number;
   name: string;
+  category: string;
   tag: string;
   images: string[];
   link: string;
@@ -48,6 +48,7 @@ export default function Page() {
   const [rCountries, setRCountries] = useState<Set<string>>(new Set(['todos']));
   const [rThemes, setRThemes] = useState<Set<string>>(new Set(['todos']));
   const [fastFoodTypes, setFastFoodTypes] = useState<Set<string>>(new Set(['todos']));
+  const [geniusCategory, setGeniusCategory] = useState<string>('recomendaciones');
 
   useEffect(() => {
     const handleOpenLogin = () => setIsLoginModalOpen(true);
@@ -98,29 +99,19 @@ export default function Page() {
   }, []);
 
   const getCityServices = (): ServiceItem[] => {
-    let rawData: unknown = bogotaData;
-    const cityLower = selectedCity.toLowerCase();
-    if (cityLower.includes('medellin') || cityLower.includes('medellín')) {
-      rawData = medellinData;
-    } else if (cityLower.includes('cali')) {
-      rawData = caliData;
-    }
+    if (normalizeCatalogValue(selectedCity) !== 'bogota') return [];
 
-    const dataObj = rawData as { services?: unknown[] } | unknown[];
-    const items = Array.isArray(dataObj) 
-      ? dataObj 
-      : (dataObj && typeof dataObj === 'object' && 'services' in dataObj && Array.isArray((dataObj as { services: unknown[] }).services) 
-          ? (dataObj as { services: unknown[] }).services 
-          : []);
+    const items = bogotaData.services as Array<Record<string, unknown>>;
 
     const defaultImages = [
       "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1920&h=1080&fit=crop",
       "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?q=80&w=1920&h=1080&fit=crop"
     ];
 
-    return (items as Array<Record<string, unknown>>).map((item, index) => ({
-      id: Number(item.id) || index + 1,
+    return items.map((item, index) => ({
+      id: index + 1,
       name: String(item.name || 'Lugar sin nombre'),
+      category: String(item.category || ''),
       tag: `${String(item.category || '')} ${String(item.tag || '')}`,
       images: Array.isArray(item.images) && item.images.length > 0 && typeof item.images[0] === 'string' && item.images[0].startsWith('http')
         ? (item.images as string[]) 
@@ -131,9 +122,7 @@ export default function Page() {
 
   const allServicesData = getCityServices();
   
-  const filteredServices = activeService 
-    ? allServicesData.filter((service) => service.tag.toLowerCase().includes(activeService.toLowerCase()))
-    : allServicesData;
+  const filteredServices = filterServicesByCategory(allServicesData, activeService);
 
   const nextImage = (id: number, totalImages: number, e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
@@ -198,6 +187,8 @@ export default function Page() {
           setRThemes={setRThemes}
           fastFoodTypes={fastFoodTypes} 
           setFastFoodTypes={setFastFoodTypes}
+          geniusCategory={geniusCategory}
+          setGeniusCategory={setGeniusCategory}
         />
         <div id="sesion-4-tarjetas" className="w-full">
           <TargetSesion4 

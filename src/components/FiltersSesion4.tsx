@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { Compass, MapPin, Search, SlidersHorizontal, Building2, Home, BedDouble, UtensilsCrossed, Landmark, Trees, Castle, Sparkles, Music, Eye, Heart, Users, Flame, Globe, Check } from 'lucide-react';
+import { useLanguage } from './LanguageProvider';
 
 interface FilterSesion4Props {
   selectedCity: string;
@@ -63,6 +64,7 @@ export default function FilterSesion4({
   cFree, setCFree,
   geniusCategory, setGeniusCategory
 }: FilterSesion4Props) {
+  const { t } = useLanguage();
   const cities = ['Bogotá', 'Medellín', 'Cali', 'Cartagena', 'Santa Marta', 'Barranquilla'];
 
   const toggleMultiSelect = (currentSet: Set<string>, setFn: React.Dispatch<React.SetStateAction<Set<string>>>, id: string, allKey = 'todos') => {
@@ -87,7 +89,7 @@ export default function FilterSesion4({
       {/* 1. DESTINO */}
       <div className="flex flex-col gap-2.5">
         <div className="flex items-center justify-between text-neutral-900 font-bold text-[11px] uppercase tracking-wider">
-          <span>1. Destino</span>
+          <span>{t('1. Destino')}</span>
           <Compass className="w-4 h-4 text-neutral-400" />
         </div>
 
@@ -99,7 +101,7 @@ export default function FilterSesion4({
               className="w-full bg-white border border-neutral-200 text-neutral-900 text-xs font-semibold rounded-xl px-4 py-3 appearance-none pr-9 cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500/30 shadow-xs"
             >
               {cities.map((city) => (
-                <option key={city} value={city}>{city}</option>
+                <option key={city} value={city}>{t(city)}</option>
               ))}
             </select>
             <MapPin className="w-4 h-4 text-neutral-400 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -108,7 +110,7 @@ export default function FilterSesion4({
           <button
             onClick={() => setHasSearched(true)}
             className="w-11 h-11 rounded-xl bg-red-600 hover:bg-red-700 text-white flex items-center justify-center cursor-pointer transition-all shadow-md shadow-red-600/20 flex-shrink-0 active:scale-95"
-            title="Buscar"
+            title={t('Buscar')}
           >
             <Search className="w-4 h-4 stroke-[2.5]" />
           </button>
@@ -118,7 +120,7 @@ export default function FilterSesion4({
       {/* 2. CATEGORÍAS (Sin líneas divisorias, ancho optimizado y neón rojo al seleccionar) */}
       <div className="flex flex-col gap-2.5">
         <div className="flex items-center justify-between text-neutral-900 font-bold text-[11px] uppercase tracking-wider">
-          <span>2. Categorías</span>
+          <span>{t('2. Categorías')}</span>
           <Sparkles className="w-3.5 h-3.5 text-red-600" />
         </div>
 
@@ -139,7 +141,7 @@ export default function FilterSesion4({
               >
                 <Icon className={`w-5 h-5 transition-transform group-hover:scale-110 ${isSelected ? 'text-red-600' : 'text-neutral-500'}`} />
                 <span className={`text-[11px] tracking-tight text-center truncate w-full ${isSelected ? 'font-bold text-red-600' : 'font-medium text-neutral-700'}`}>
-                  {cat.label}
+                  {t(cat.label)}
                 </span>
               </button>
             );
@@ -151,27 +153,27 @@ export default function FilterSesion4({
       <div className="flex flex-col gap-3 pt-3 border-t border-neutral-200/60">
         <button className="w-full bg-neutral-900 hover:bg-neutral-800 text-white text-xs font-bold py-3.5 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 cursor-pointer transition-all tracking-wide">
           <SlidersHorizontal className="w-3.5 h-3.5 text-red-500" />
-          Filtros Avanzados
+          {t('Filtros Avanzados')}
         </button>
 
         {/* Hoteles / Airbnb / Hostal */}
         {(activeService === 'hotel' || activeService === 'airbnb' || activeService === 'hostal') && (
           <div className="flex flex-col gap-3 text-xs bg-white p-4.5 rounded-2xl border border-neutral-200/60 shadow-xs">
             <label className="flex flex-col gap-1.5 font-medium text-neutral-700">
-              <span className="text-[11px]">Huéspedes: <strong className="text-neutral-900 font-bold">{hGuests}</strong></span>
+              <span className="text-[11px]">{t('Huéspedes:')} <strong className="text-neutral-900 font-bold">{hGuests}</strong></span>
               <input type="range" min="1" max="10" value={hGuests} onChange={(e) => setHGuests(Number(e.target.value))} className="accent-red-600 w-full cursor-pointer" />
             </label>
             <div className="flex gap-2 items-center">
-              <input type="number" placeholder="Mín ($)" value={hPriceMin} onChange={(e) => setHPriceMin(Number(e.target.value))} className="w-1/2 bg-neutral-50 border border-neutral-200 rounded-xl p-2.5 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-red-500" />
+              <input type="number" placeholder={t('Mín ($)')} value={hPriceMin} onChange={(e) => setHPriceMin(Number(e.target.value))} className="w-1/2 bg-neutral-50 border border-neutral-200 rounded-xl p-2.5 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-red-500" />
               <span className="text-neutral-400">—</span>
-              <input type="number" placeholder="Máx ($)" value={hPriceMax} onChange={(e) => setHPriceMax(Number(e.target.value))} className="w-1/2 bg-neutral-50 border border-neutral-200 rounded-xl p-2.5 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-red-500" />
+              <input type="number" placeholder={t('Máx ($)')} value={hPriceMax} onChange={(e) => setHPriceMax(Number(e.target.value))} className="w-1/2 bg-neutral-50 border border-neutral-200 rounded-xl p-2.5 text-xs text-neutral-800 focus:outline-none focus:ring-1 focus:ring-red-500" />
             </div>
             <div className="flex flex-col gap-2 font-normal text-neutral-600 text-xs pt-1 border-t border-neutral-100">
-              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hSpaPool} onChange={(e) => setHSpaPool(e.target.checked)} className="accent-red-600 rounded" /> Spa o piscina</label>
-              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hTopRated} onChange={(e) => setHTopRated(e.target.checked)} className="accent-red-600 rounded" /> Mejores calificaciones</label>
-              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hPets} onChange={(e) => setHPets(e.target.checked)} className="accent-red-600 rounded" /> Mascotas permitidas</label>
-              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hAc} onChange={(e) => setHAc(e.target.checked)} className="accent-red-600 rounded" /> Aire acondicionado</label>
-              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hParking} onChange={(e) => setHParking(e.target.checked)} className="accent-red-600 rounded" /> Parqueadero privado</label>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hSpaPool} onChange={(e) => setHSpaPool(e.target.checked)} className="accent-red-600 rounded" /> {t('Spa o piscina')}</label>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hTopRated} onChange={(e) => setHTopRated(e.target.checked)} className="accent-red-600 rounded" /> {t('Mejores calificaciones')}</label>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hPets} onChange={(e) => setHPets(e.target.checked)} className="accent-red-600 rounded" /> {t('Mascotas permitidas')}</label>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hAc} onChange={(e) => setHAc(e.target.checked)} className="accent-red-600 rounded" /> {t('Aire acondicionado')}</label>
+              <label className="flex items-center gap-2.5 cursor-pointer hover:text-neutral-900"><input type="checkbox" checked={hParking} onChange={(e) => setHParking(e.target.checked)} className="accent-red-600 rounded" /> {t('Parqueadero privado')}</label>
             </div>
           </div>
         )}
@@ -179,7 +181,7 @@ export default function FilterSesion4({
         {/* Restaurantes (Diseño mejorado con tarjetas/chips visuales modernos) */}
         {activeService === 'restaurante' && (
           <div className="flex flex-col gap-2 bg-white p-4.5 rounded-2xl border border-neutral-200/60 shadow-xs">
-            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">Filtrar por ambiente:</span>
+            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">{t('Filtrar por ambiente:')}</span>
             <div className="flex flex-col gap-1.5 max-h-[240px] overflow-y-auto pr-1">
               {[
                 { id: 'todos', label: 'Top Calificados', icon: Flame },
@@ -205,7 +207,7 @@ export default function FilterSesion4({
                   >
                     <div className="flex items-center gap-2.5">
                       <SubIcon className={`w-4 h-4 ${isSelected ? 'text-red-600' : 'text-neutral-400'}`} />
-                      <span>{item.label}</span>
+                      <span>{t(item.label)}</span>
                     </div>
                     {isSelected && <Check className="w-3.5 h-3.5 text-red-600 stroke-[3]" />}
                   </button>
@@ -215,7 +217,7 @@ export default function FilterSesion4({
 
             {rSubFilters.has('pais') && (
               <div className="flex flex-col gap-1 pl-2 mt-2 pt-2 border-t border-neutral-100">
-                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider">Regiones:</span>
+                <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider">{t('Regiones')}</span>
                 {['Italia', 'Japón', 'México', 'Francia', 'Perú', 'España', 'Argentina', 'Colombia'].map((country) => (
                   <button
                     key={country}
@@ -224,7 +226,7 @@ export default function FilterSesion4({
                       rCountries.has(country) ? 'bg-red-600 text-white font-bold' : 'text-neutral-600 hover:bg-neutral-100'
                     }`}
                   >
-                    • {country}
+                    • {t(country)}
                   </button>
                 ))}
               </div>
@@ -235,7 +237,7 @@ export default function FilterSesion4({
         {/* Comida Rápida (Diseño mejorado) */}
         {activeService === 'comida_rapida' && (
           <div className="flex flex-col gap-2 max-h-[240px] overflow-y-auto bg-white p-4.5 rounded-2xl border border-neutral-200/60 shadow-xs">
-            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">Especialidades:</span>
+            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-1">{t('Especialidades')}</span>
             {['Perro caliente', 'Hamburguesa', 'Salchipapa', 'Pollo frito', 'Empanadas', 'Pizza', 'Burritos'].map((item) => {
               const isSelected = fastFoodTypes.has(item);
               return (
@@ -248,7 +250,7 @@ export default function FilterSesion4({
                       : 'bg-neutral-50/70 border-neutral-200/60 text-neutral-700 hover:bg-neutral-100 font-medium'
                   }`}
                 >
-                  <span>{item}</span>
+                  <span>{t(item)}</span>
                   {isSelected && <Check className="w-3.5 h-3.5 text-red-600 stroke-[3]" />}
                 </button>
               );

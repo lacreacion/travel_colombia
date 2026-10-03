@@ -5,6 +5,7 @@ import Link from 'next/link';
 import AuthModalLogin from './AuthModalLogin';
 import UserProfileLogin from './UserProfileLogin';
 import InfoModalLogin from './InfoModalLogin';
+import { useLanguage, type Language } from './LanguageProvider';
 
 interface NavbarProps {
   currentCity?: string;
@@ -41,31 +42,33 @@ const SERVICIOS_LISTA = [
 ];
 
 export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
+  const { language, setLanguage, t } = useLanguage();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [activeInfoModal, setActiveInfoModal] = useState<{ title: string; content: string } | null>(null);
 
-  const [user, setUser] = useState<{ name: string; email: string } | null>(() => {
-    if (typeof window === 'undefined') return null;
-    const stored = localStorage.getItem('travel_colombia_user');
-    return stored ? JSON.parse(stored) : null;
-  });
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
 
   useEffect(() => {
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'travel_colombia_user') {
-        setUser(e.newValue ? JSON.parse(e.newValue) : null);
+    const refreshSession = async () => {
+      try {
+        const response = await fetch('/api/auth/session', { cache: 'no-store' });
+        const data = await response.json();
+        setUser(response.ok ? data.user : null);
+      } catch {
+        setUser(null);
       }
     };
-    window.addEventListener('storage', handleStorageChange);
-    return () => window.removeEventListener('storage', handleStorageChange);
+
+    void refreshSession();
+    window.addEventListener('auth-session-changed', refreshSession);
+    return () => window.removeEventListener('auth-session-changed', refreshSession);
   }, []);
 
-  const changeLanguage = (langCode: string) => {
-    document.cookie = `googtrans=/auto/${langCode}`;
-    window.location.reload();
+  const changeLanguage = (langCode: Language) => {
+    setLanguage(langCode);
   };
 
   const handleUserClick = () => {
@@ -121,13 +124,13 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
         <div className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 text-[11px] font-bold text-white tracking-[0.2em] flex-grow mx-4">
           
           <a href="#" onClick={irAInicio} className="hover:text-[#ffee00] hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] transition-all cursor-pointer">
-            INICIO
+            {t('INICIO')}
           </a>
           
           {/* Ciudades */}
           <div className="group relative py-2">
             <button className="hover:text-[#ffee00] hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] flex items-center gap-1 cursor-pointer transition-all outline-none">
-              CIUDADES <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
+              {t('CIUDADES')} <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
             </button>
             <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block pt-3">
               <ul className="bg-zinc-800/95 backdrop-blur-2xl border border-zinc-700/65 rounded-2xl p-4 min-w-[200px] max-h-[380px] overflow-y-auto shadow-2xl space-y-1">
@@ -147,7 +150,7 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
           {/* Servicios */}
           <div className="group relative py-2">
             <button className="hover:text-[#ffee00] hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] flex items-center gap-1 cursor-pointer transition-all outline-none">
-              SERVICIOS <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
+              {t('SERVICIOS')} <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
             </button>
             <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block pt-3">
               <ul className="bg-zinc-800/95 backdrop-blur-2xl border border-zinc-700/65 rounded-2xl p-4 min-w-[200px] max-h-[380px] overflow-y-auto shadow-2xl space-y-1">
@@ -157,7 +160,7 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
                     onClick={() => seleccionarServicioNavbar(serv)}
                     className="text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 p-2 rounded-lg text-[11px] font-bold uppercase tracking-wider cursor-pointer transition-all"
                   >
-                    {serv}
+                    {t(serv)}
                   </li>
                 ))}
               </ul>
@@ -167,7 +170,7 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
           {/* Quiénes Somos */}
           <div className="group relative py-2">
             <button className="hover:text-[#ffee00] hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] flex items-center gap-1 cursor-pointer transition-all outline-none">
-              QUIENES SOMOS <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
+              {t('QUIENES SOMOS')} <ChevronDown size={13} className="group-hover:rotate-180 transition-transform opacity-60" />
             </button>
             <div className="absolute top-full left-1/2 -translate-x-1/2 hidden group-hover:block pt-3">
               <ul className="bg-zinc-800/95 backdrop-blur-2xl border border-zinc-700/65 rounded-2xl p-4 min-w-[200px] shadow-2xl space-y-1">
@@ -177,7 +180,7 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
                     onClick={() => setActiveInfoModal(aboutInfoData[opt])}
                     className="text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 p-2 rounded-lg text-[11px] font-bold uppercase tracking-wider cursor-pointer transition-all"
                   >
-                    {opt}
+                    {t(opt)}
                   </li>
                 ))}
               </ul>
@@ -185,7 +188,7 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
           </div>
           
           <a href="#contacto" onClick={irAContacto} className="hover:text-[#ffee00] hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] transition-all whitespace-nowrap cursor-pointer">
-            CONTACTO
+            {t('CONTACTO')}
           </a>
         </div>
 
@@ -214,19 +217,19 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
             </button>
             {isLangOpen && (
               <div className="absolute right-0 mt-3 w-44 bg-zinc-800/95 backdrop-blur-2xl border border-zinc-700/65 rounded-2xl p-2 shadow-2xl z-50 space-y-1">
-                <div className="text-[10px] font-bold text-[#ffee00] px-3 py-1 uppercase tracking-wider">Idioma</div>
-                <button onClick={() => { changeLanguage('es'); setIsLangOpen(false); }} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇪🇸 Español</button>
-                <button onClick={() => { changeLanguage('en'); setIsLangOpen(false); }} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇺🇸 English</button>
-                <button onClick={() => { changeLanguage('fr'); setIsLangOpen(false); }} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇫🇷 Français</button>
-                <button onClick={() => { changeLanguage('de'); setIsLangOpen(false); }} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇩🇪 Deutsch</button>
-                <button onClick={() => { changeLanguage('pt'); setIsLangOpen(false); }} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇧🇷 Português</button>
+                <div className="text-[10px] font-bold text-[#ffee00] px-3 py-1 uppercase tracking-wider">{t('Idioma')}</div>
+                <button onClick={() => { changeLanguage('es'); setIsLangOpen(false); }} aria-pressed={language === 'es'} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇪🇸 Español</button>
+                <button onClick={() => { changeLanguage('en'); setIsLangOpen(false); }} aria-pressed={language === 'en'} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇺🇸 English</button>
+                <button onClick={() => { changeLanguage('fr'); setIsLangOpen(false); }} aria-pressed={language === 'fr'} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇫🇷 Français</button>
+                <button onClick={() => { changeLanguage('de'); setIsLangOpen(false); }} aria-pressed={language === 'de'} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇩🇪 Deutsch</button>
+                <button onClick={() => { changeLanguage('pt'); setIsLangOpen(false); }} aria-pressed={language === 'pt'} className="w-full text-left text-white/80 hover:text-[#ffee00] hover:bg-zinc-700/50 px-3 py-2 rounded-lg text-[11px] font-bold transition-all cursor-pointer">🇧🇷 Português</button>
               </div>
             )}
           </div>
 
           <div className="flex items-center gap-2">
             {isSearchOpen && (
-              <input type="text" placeholder="BUSCAR..." autoFocus className="bg-white/10 border border-white/10 rounded-full py-1.5 px-4 text-white text-[10px] outline-none w-[150px] focus:border-[#ffee00] focus:drop-shadow-[0_0_6px_rgba(255,238,0,0.5)] transition-all placeholder:text-white/40" />
+              <input type="text" placeholder={t('BUSCAR...')} autoFocus className="bg-white/10 border border-white/10 rounded-full py-1.5 px-4 text-white text-[10px] outline-none w-[150px] focus:border-[#ffee00] focus:drop-shadow-[0_0_6px_rgba(255,238,0,0.5)] transition-all placeholder:text-white/40" />
             )}
             <Search size={18} className="text-white cursor-pointer hover:text-[#ffee00] hover:drop-shadow-[0_0_8px_rgba(255,238,0,0.6)] transition-all" onClick={() => setIsSearchOpen(!isSearchOpen)} />
           </div>
@@ -260,8 +263,8 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
         onLoginSuccess={(userData) => {
-          // Guarda el usuario en el estado tras iniciar sesión de forma manual, pero cierra el modal limpiamente
           setUser(userData);
+          window.dispatchEvent(new Event('auth-session-changed'));
           setIsLoginOpen(false);
         }}
       />
@@ -272,9 +275,10 @@ export default function Navbar({ currentCity = "Bogotá" }: NavbarProps) {
         onClose={() => setIsProfileOpen(false)} 
         currentCity={currentCity} 
         user={user}
-        onLogout={() => {
-          localStorage.removeItem('travel_colombia_user');
+        onLogout={async () => {
+          await fetch('/api/auth/logout', { method: 'POST' });
           setUser(null);
+          window.dispatchEvent(new Event('auth-session-changed'));
           setIsProfileOpen(false);
         }}
       />

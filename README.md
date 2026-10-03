@@ -1,4 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Viaja Colombia
+
+Aplicación web para explorar destinos y servicios turísticos en Colombia.
+
+### Configuración local
+
+1. Instala las dependencias con `npm install`.
+2. Copia `.env.example` a `.env.local` y configura `MONGODB_URI` para una base de datos de desarrollo.
+3. Genera un secreto de sesión con `node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"` y guárdalo como `AUTH_SESSION_SECRET` en `.env.local`. No compartas ni subas ese archivo.
+4. Inicia la aplicación con `npm run dev`.
+
+La base usada por defecto es `Viajando_por_Colombia`; puedes cambiarla con `MONGODB_DATABASE`. Usa una base separada para pruebas.
+El script de usuarios de ejemplo no borra la colección; para ejecutarlo hay que definir `SEED_DEFAULT_PASSWORD` y pasar `--confirm-seed`.
+Si hay contraseñas heredadas en texto plano, haz primero un respaldo de MongoDB y luego ejecuta `npm run migrate:users -- --confirm-migration`. No ejecutes migraciones o cargas contra una base de producción sin revisar el respaldo y `MONGODB_DATABASE`.
+
+### Validaciones
+
+- `npm run lint`: ejecuta ESLint.
+- `npx tsc --noEmit`: valida TypeScript.
+- `npm test`: ejecuta las pruebas unitarias.
+
+El endpoint de recuperación de contraseña permanece deshabilitado hasta conectar un proveedor de correo y una verificación OTP segura.
 
 ## Getting Started
 

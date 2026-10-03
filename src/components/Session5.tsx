@@ -1,11 +1,13 @@
 'use client';
 import { useState } from 'react';
+import { useLanguage } from './LanguageProvider';
 
 interface Session5Props {
   selectedCity?: string;
 }
 
 export default function Session5({ selectedCity = "Bogotá" }: Session5Props) {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [sent, setSent] = useState(false);
@@ -38,10 +40,10 @@ export default function Session5({ selectedCity = "Bogotá" }: Session5Props) {
 
           <div className="space-y-2">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black tracking-tight leading-tight">
-              ¿Listo para <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-blue-500 to-red-500">viajar por Colombia</span>?
+              {t('¿Listo para')} <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-blue-500 to-red-500">{t('viajar por Colombia')}?</span>
             </h2>
             <p className="text-gray-400 text-sm leading-relaxed max-w-lg">
-              Contáctanos al instante o déjanos una nota o recomendacion para mejorar y hacer tu viaje inolvidable.
+              {t('Contáctanos al instante o déjanos una nota o recomendacion para mejorar y hacer tu viaje inolvidable.')}
             </p>
           </div>
 
@@ -72,7 +74,7 @@ export default function Session5({ selectedCity = "Bogotá" }: Session5Props) {
                 ✉️
               </div>
               <div className="overflow-hidden">
-                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Correo</p>
+                <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">{t('Correo')}</p>
                 <p className="font-bold text-xs text-white truncate group-hover:text-blue-300 transition">soporte@travelcolombia.com</p>
               </div>
             </a>
@@ -91,29 +93,29 @@ export default function Session5({ selectedCity = "Bogotá" }: Session5Props) {
                 <div className="w-12 h-12 bg-gradient-to-tr from-yellow-400 via-blue-500 to-red-500 text-white rounded-xl flex items-center justify-center mx-auto mb-3 text-lg font-bold shadow-lg shadow-blue-500/20">
                   ✓
                 </div>
-                <h4 className="font-extrabold text-base text-white">¡Mensaje Enviado!</h4>
+                <h4 className="font-extrabold text-base text-white">{t('¡Mensaje Enviado!')}</h4>
                 <p className="text-xs text-gray-400 mt-1 max-w-xs">
-                  Un asesor experto se comunicará contigo en menos de 2 horas.
+                  {t('Un asesor experto se comunicará contigo en menos de 2 horas.')}
                 </p>
                 <button 
                   onClick={() => setSent(false)} 
                   className="mt-4 px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition border border-white/10"
                 >
-                  Enviar otro mensaje
+                  {t('Enviar otro mensaje')}
                 </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>
-                  <h3 className="text-lg font-extrabold text-white">Escríbenos una nota</h3>
-                  <p className="text-xs text-gray-400 mt-0.5">Te responderemos de inmediato.</p>
+                  <h3 className="text-lg font-extrabold text-white">{t('Escríbenos una nota')}</h3>
+                  <p className="text-xs text-gray-400 mt-0.5">{t('Te responderemos de inmediato.')}</p>
                 </div>
                 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-gray-300">Correo electrónico</label>
+                  <label className="text-[11px] font-semibold text-gray-300">{t('Correo electrónico')}</label>
                   <input 
                     type="email" 
-                    placeholder="tucorreo@ejemplo.com" 
+                    placeholder={t('tu.correo@ejemplo.com')} 
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -122,10 +124,10 @@ export default function Session5({ selectedCity = "Bogotá" }: Session5Props) {
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-semibold text-gray-300">Tu Mensaje</label>
+                  <label className="text-[11px] font-semibold text-gray-300">{t('Tu Mensaje')}</label>
                   <textarea 
                     rows={2}
-                    placeholder="¿Qué tipo de experiencia buscas?" 
+                    placeholder={t('¿Qué tipo de experiencia buscas?')} 
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     required
@@ -138,7 +140,7 @@ export default function Session5({ selectedCity = "Bogotá" }: Session5Props) {
                   type="submit"
                   className="w-full py-3 bg-gradient-to-r from-yellow-400 via-blue-600 to-red-600 text-white font-extrabold rounded-xl text-xs hover:opacity-95 transition-all shadow-lg shadow-blue-900/30 active:scale-[0.99] tracking-wide uppercase mt-1"
                 >
-                  Enviar Mensaje 
+                  {t('Enviar Mensaje')}
                 </button>
               </form>
             )}
